@@ -57,6 +57,7 @@ Totale circa 400 MB, tutti sotto i 100 MB per file (limite GitHub). L'app non sc
 | Modalità aereo | `npm run prova:senza-rete` | vedi sezione 3 |
 | Punti, diario e gruppo (due telefoni + server locale) | `npm run prova:gruppo` | 19 controlli passati, 14 schermate: pressione lunga, mirino, 4 tipi di punto, invio di 5 soli campi, punto/ora/note mai fuori dal telefono, solo 2 indirizzi contattati, visibile solo dal giorno dopo, coda senza rete, «Togli dal gruppo» |
 | Gruppo dal vivo (sito pubblicato + server su Cloudflare) | `node tests/gruppo_dal_vivo.mjs https://lore63863.github.io/Bole/ https://bole-condivisione.bole-funghi.workers.dev <cartella>` | 13 controlli passati: l'iPhone crea il gruppo, l'Android entra con il codice, un ritrovamento esce con i soli 5 campi (risposta 201) e si toglie (204); oggi l'altro telefono vede zero, come previsto. La visibilità dal giorno dopo si prova solo in locale (`npm run prova:gruppo`). La prova non lascia dati sul server |
+| Colori dell'indice uguali alla legenda | `node tests/colori.mjs <url> <cartella>` poi `python3 tests/colori_conta.py <cartella>` | 8 viste (4 zone, zoom 10–14, iPhone e Android): meno dello 0,1% di pixel viola, blu o verdi; sulle schermate dell'iPhone vero prima della correzione erano il 49–73% |
 | Server della condivisione | `condivisione/`: `npm run prova` | 36 controlli passati: CORS, codici, campi ammessi, visibilità, database senza codici né IP, limiti, pulizia dopo 3 anni |
 | Griglia di 1 km (EPSG:3035) | confronto con `pyproj` su 2.000 punti a caso | differenza 0,0 m; esempio EPSG 50° N 5° E identico |
 | Lettura delle tessere PNG in WebKit | `tests/decodifica.mjs` | 0 differenze su habitat e quota |
@@ -83,6 +84,7 @@ Totale circa 400 MB, tutti sotto i 100 MB per file (limite GitHub). L'app non sc
 8. Precisione GPS: si tiene la lettura migliore dei primi 25 secondi; sotto gli alberi e in valle può restare oltre 20-50 m (l'app lo dice e propone il mirino).
 9. Gruppo: le segnalazioni non sono verificate; in un gruppo piccolo si può intuire chi ha condiviso; Cloudflare vede gli indirizzi IP mentre le richieste passano (Bolé non li salva).
 10. Chrome e Android: i file delle mappe (`.pmtiles`) si leggono senza la cache del browser (`dati/archivi.ts`). Con molte richieste a pezzi in parallelo la cache di Chrome a volte restituiva byte rovinati e una tessera del rilievo non si leggeva («The source image could not be decoded»). Costo: qualche richiesta in più alla rete; su iPhone (Safari) la cache resta.
+11. Le tessere disegnate dall'app (indice e curve di livello) vanno alla mappa come file PNG e non come ImageBitmap: su un iPhone 13 Pro vero l'ImageBitmap arrivava con i colori sbagliati (viola, lilla, verde), mentre nei telefoni simulati era giusto. Costo: una codifica PNG per tessera (pochi millisecondi).
 
 ## 7. Punti, statistiche e gruppo (aggiunti il 12 novembre 2026)
 

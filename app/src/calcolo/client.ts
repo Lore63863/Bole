@@ -24,7 +24,7 @@ lavoratore.onmessage = (e: MessageEvent) => {
   const f = inAttesa.get(id);
   inAttesa.delete(id);
   if (errore) console.warn("lavoratore:", errore);
-  f?.(errore ? null : (resto.bitmap ?? resto.risultato ?? null));
+  f?.(errore ? null : (resto.png ?? resto.risultato ?? null));
 };
 
 function chiedi<T>(msg: Record<string, unknown>): Promise<T> {
@@ -161,20 +161,26 @@ export function parametriDi(id: string): ParametriSpecie | undefined {
 }
 
 // --- protocolli per MapLibre ---------------------------------------------------------------------
-let vuota: ImageBitmap | null = null;
-async function trasparente() {
-  vuota ??= await createImageBitmap(new ImageData(1, 1));
-  return vuota;
+// Tessere fatte qui: file PNG, non ImageBitmap (vedi inPNG in lavoratore.ts: colori sbagliati sugli iPhone veri).
+async function png(img: ImageData): Promise<ArrayBuffer> {
+  const tela = new OffscreenCanvas(img.width, img.height);
+  tela.getContext("2d")!.putImageData(img, 0, 0);
+  return await (await tela.convertToBlob({ type: "image/png" })).arrayBuffer();
 }
-let piana: ImageBitmap | null = null;
-async function quotaZero() {
+let vuota: Promise<ArrayBuffer> | null = null;
+function trasparente() {
+  vuota ??= png(new ImageData(1, 1));
+  return vuota.then((b) => b.slice(0));
+}
+let piana: Promise<ArrayBuffer> | null = null;
+function quotaZero() {
   // tessera Terrarium a quota 0 (R=128, G=0, B=0): niente rilievo
-  if (!piana) {
+  piana ??= (() => {
     const img = new ImageData(256, 256);
     for (let i = 0; i < img.data.length; i += 4) { img.data[i] = 128; img.data[i + 3] = 255; }
-    piana = await createImageBitmap(img);
-  }
-  return piana;
+    return png(img);
+  })();
+  return piana.then((b) => b.slice(0));
 }
 
 function zxy(url: string, prefisso: string) {
@@ -185,7 +191,7 @@ function zxy(url: string, prefisso: string) {
 
 const protocolloIndice: AddProtocolAction = async (p) => {
   const { z, x, y, q } = zxy(p.url, "boleindice://");
-  const bmp = await chiedi<ImageBitmap | null>({
+  const bmp = await chiedi<ArrayBuffer | null>({
     tipo: "tessera", z, x, y, specie: specieCalcolo(q.get("s") ?? "porcini"), giorno: Number(q.get("g") ?? 0),
   });
   return { data: bmp ?? (await trasparente()) };
@@ -193,7 +199,7 @@ const protocolloIndice: AddProtocolAction = async (p) => {
 
 const protocolloIsoipse: AddProtocolAction = async (p) => {
   const { z, x, y } = zxy(p.url, "boleisoipse://");
-  const bmp = await chiedi<ImageBitmap | null>({ tipo: "isoipse", z, x, y });
+  const bmp = await chiedi<ArrayBuffer | null>({ tipo: "isoipse", z, x, y });
   return { data: bmp ?? (await trasparente()) };
 };
 

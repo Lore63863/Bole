@@ -223,8 +223,21 @@ async function tesseraIndice(z: number, x: number, y: number, specie: SpecieCalc
     }
     px[o] = rr; px[o + 1] = gg; px[o + 2] = bb; px[o + 3] = ALFA[cl];
   });
-  // alfa "dritto": MapLibre non deve ricevere colori già moltiplicati per la trasparenza
-  return await createImageBitmap(img, { premultiplyAlpha: "none" });
+  return await inPNG(img);
+}
+
+/**
+ * Le tessere disegnate qui vanno alla mappa come file PNG, come lo sfondo, e non come ImageBitmap:
+ * sugli iPhone veri (scheda grafica) un ImageBitmap fatto da ImageData arrivava alla mappa con i
+ * colori sbagliati (viola, lilla, verde al posto di giallo e arancione), visto il 12 novembre 2026.
+ */
+let telaPNG: OffscreenCanvas | null = null;
+async function inPNG(img: ImageData): Promise<ArrayBuffer> {
+  telaPNG ??= new OffscreenCanvas(TESSERA, TESSERA);
+  const ctx = telaPNG.getContext("2d")!;
+  ctx.clearRect(0, 0, TESSERA, TESSERA);
+  ctx.putImageData(img, 0, 0);
+  return await (await telaPNG.convertToBlob({ type: "image/png" })).arrayBuffer();
 }
 
 // --- curve di livello (quadrati in marcia sulla quota, ricampionata alla tessera richiesta) -------
@@ -299,7 +312,7 @@ async function tesseraIsoipse(z: number, x: number, y: number) {
   const img = ctx.getImageData(0, 0, TESSERA, TESSERA);
   const d = img.data;
   for (let i = 3; i < d.length; i += 4) d[i] = d[i] > 90 ? 255 : 0;
-  return await createImageBitmap(img, { premultiplyAlpha: "none" });
+  return await inPNG(img);
 }
 
 // --- un punto -----------------------------------------------------------------------------------
@@ -451,12 +464,12 @@ self.onmessage = async (e: MessageEvent) => {
         break;
       case "tessera": {
         const bmp = await tesseraIndice(m.z, m.x, m.y, m.specie, m.giorno);
-        (self as DedicatedWorkerGlobalScope).postMessage({ id: m.id, bitmap: bmp }, bmp ? [bmp] : []);
+        (self as DedicatedWorkerGlobalScope).postMessage({ id: m.id, png: bmp }, bmp ? [bmp] : []);
         break;
       }
       case "isoipse": {
         const bmp = await tesseraIsoipse(m.z, m.x, m.y);
-        (self as DedicatedWorkerGlobalScope).postMessage({ id: m.id, bitmap: bmp }, bmp ? [bmp] : []);
+        (self as DedicatedWorkerGlobalScope).postMessage({ id: m.id, png: bmp }, bmp ? [bmp] : []);
         break;
       }
       case "punto":
