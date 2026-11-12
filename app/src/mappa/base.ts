@@ -10,7 +10,8 @@
  * Il protocollo "bolebase://z/x/y" sceglie il file giusto per ogni tessera.
  * Oltre lo zoom 14 la mappa ingrandisce le tessere dello zoom 14 (sono vettoriali).
  */
-import { PMTiles } from "pmtiles";
+import type { PMTiles } from "pmtiles";
+import { apriArchivio } from "../dati/archivi";
 import type { AddProtocolAction } from "maplibre-gl";
 import { tesseraSalvata } from "../dati/fuorilinea";
 
@@ -19,10 +20,10 @@ const CONFINE_EST_OVEST = 8.1; // gradi di longitudine
 
 const cartella = `${import.meta.env.BASE_URL}dati/mappa/`;
 const archivi = {
-  basso: new PMTiles(`${cartella}base_z0-12.pmtiles`),
-  z13: new PMTiles(`${cartella}base_z13.pmtiles`),
-  ovest: new PMTiles(`${cartella}base_z14_ovest.pmtiles`),
-  est: new PMTiles(`${cartella}base_z14_est.pmtiles`),
+  basso: apriArchivio(`${cartella}base_z0-12.pmtiles`),
+  z13: apriArchivio(`${cartella}base_z13.pmtiles`),
+  ovest: apriArchivio(`${cartella}base_z14_ovest.pmtiles`),
+  est: apriArchivio(`${cartella}base_z14_est.pmtiles`),
 };
 
 /** Longitudine del centro della tessera z/x/y. */

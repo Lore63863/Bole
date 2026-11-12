@@ -2,7 +2,8 @@
  * Scaricare (e togliere) un'area per l'uso senza rete: mappa base zoom 6-14, boschi e quota zoom 6-12.
  * Il meteo e i file dell'app li tiene il service worker (vedi vite.config.ts).
  */
-import { PMTiles } from "pmtiles";
+import type { PMTiles } from "pmtiles";
+import { apriArchivio } from "./archivi";
 import { cartellaStrati, inviaAree } from "../calcolo/client";
 import { tesseraBaseDallaRete } from "../mappa/base";
 import { memoria } from "../ui/dom";
@@ -44,7 +45,7 @@ export async function scarica(
   const archivi = new Map<string, PMTiles>();
   const archivio = (n: string) => {
     let a = archivi.get(n);
-    if (!a) { a = new PMTiles(`${cartellaStrati}${n}.pmtiles`); archivi.set(n, a); }
+    if (!a) { a = apriArchivio(`${cartellaStrati}${n}.pmtiles`); archivi.set(n, a); }
     return a;
   };
   let fatte = 0, byte = 0;

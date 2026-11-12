@@ -14,7 +14,8 @@
  *   indice = H/100 × M(pioggia, T, Tmax, Tmin, secco, neve) × S(giorno dell'anno)
  *   classe = soglie della specie; per i porcini la più alta delle quattro.
  */
-import { PMTiles } from "pmtiles";
+import type { PMTiles } from "pmtiles";
+import { apriArchivio } from "../dati/archivi";
 import { classe, COLORI_CLASSI, fattoreMeteo, type ParametriSpecie } from "./formule";
 import type { InsiemeHabitat } from "../dati/catalogo";
 import { impostaAree, impostaOrigine, tesseraSalvata } from "../dati/fuorilinea";
@@ -41,7 +42,7 @@ const archivi = new Map<string, PMTiles>();
 function archivio(nome: string, base: string): PMTiles {
   let a = archivi.get(nome);
   if (!a) {
-    a = new PMTiles(`${base}${nome}.pmtiles`);
+    a = apriArchivio(`${base}${nome}.pmtiles`);
     archivi.set(nome, a);
   }
   return a;

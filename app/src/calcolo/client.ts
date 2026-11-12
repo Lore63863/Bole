@@ -7,7 +7,7 @@
  */
 import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import { addProtocol, type AddProtocolAction } from "maplibre-gl";
-import { PMTiles } from "pmtiles";
+import { apriArchivio } from "../dati/archivi";
 import { MINIMO_RITROVAMENTI_PRECISI, specieDi } from "../dati/catalogo";
 import { GRIGLIA, campiDelGiorno, type Meteo } from "../dati/meteo";
 import { classe, fattoreMeteo, giornoDellAnno, type ParametriSpecie } from "./formule";
@@ -197,7 +197,7 @@ const protocolloIsoipse: AddProtocolAction = async (p) => {
   return { data: bmp ?? (await trasparente()) };
 };
 
-const archivioQuota = new PMTiles(`${cartellaStrati}quota.pmtiles`);
+const archivioQuota = apriArchivio(`${cartellaStrati}quota.pmtiles`);
 const protocolloQuota: AddProtocolAction = async (p, controllo) => {
   const { z, x, y } = zxy(p.url, "bolequota://");
   const salvata = await tesseraSalvata("quota", z, x, y);
