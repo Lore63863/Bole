@@ -93,6 +93,13 @@ jobs:
                 echo "::error::L'account Cloudflare ha altri Worker: cambia a mano il sottodominio workers.dev con un nome che inizi con «bole-» (vedi condivisione/README.md)."
                 exit 1
               fi
+              # Cloudflare non lo cambia direttamente: prima si toglie quello vecchio, poi si mette il nuovo.
+              if [ -n "$nome" ]; then
+                if ! curl -sS -X DELETE -H "$auth" "$api/subdomain" | jq -e '.success' >/dev/null; then
+                  echo "::error::Non riesco a togliere il sottodominio workers.dev di prima: cambialo a mano (vedi condivisione/README.md)."; exit 1
+                fi
+                sleep 5
+              fi
               nome=""
               for prova in bole-funghi "bole-funghi-$(openssl rand -hex 2)" "bole-funghi-$(openssl rand -hex 3)"; do
                 risposta=$(curl -sS -X PUT -H "$auth" -H "Content-Type: application/json" --data "{\"subdomain\":\"$prova\"}" "$api/subdomain")
