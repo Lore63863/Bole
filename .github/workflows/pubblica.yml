@@ -1,0 +1,115 @@
+# Bolé — pubblica il sito su GitHub Pages.
+#
+# Parte da solo due volte al giorno (meteo nuovo), quando cambia il codice dell'app, e a mano:
+# scheda Actions → «Pubblica il sito» → Run workflow.
+#
+# Passi: meteo di oggi (pipeline/previsione.py) → prova delle formule → costruzione dell'app →
+# aggiunta di mappe e strati (dal ramo «dati») → pubblicazione.
+# Se l'archivio del meteo non risponde, si ripubblica il meteo già online: l'app mostrerà
+# «Dati vecchi» dopo 36 ore, ma continua a funzionare.
+name: Pubblica il sito
+
+on:
+  schedule:
+    - cron: "43 6,18 * * *"   # alle 7:43 e alle 19:43 in Italia d'inverno (8:43 e 20:43 d'estate)
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "data/**"
+      - "pipeline/previsione.py"
+      - "pipeline/meteo_storico.py"
+      - "pipeline/modello.py"
+      - "pipeline/requisiti.txt"
+      - ".github/workflows/pubblica.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  costruisci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Codice
+        uses: actions/checkout@v7
+
+      - name: Mappe e strati (ramo «dati», circa 400 MB)
+        uses: actions/checkout@v7
+        with:
+          ref: dati
+          path: dati-app
+
+      - name: Python per il meteo
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: pipeline/requisiti.txt
+
+      - run: pip install -r pipeline/requisiti.txt
+
+      - name: Meteo di oggi (ECMWF IFS, archivio aperto di Open-Meteo)
+        id: meteo
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python pipeline/previsione.py
+
+      - name: Se il meteo non è arrivato, si tiene quello già pubblicato
+        if: steps.meteo.outcome != 'success'
+        run: |
+          echo "::warning::Meteo non aggiornato: si ripubblica l'ultimo disponibile."
+          mkdir -p dati-elaborati/app/meteo
+          proprietario="${GITHUB_REPOSITORY_OWNER,,}"
+          online="https://${proprietario}.github.io/${GITHUB_REPOSITORY#*/}/dati/meteo"
+          for f in oggi.json punti.bin.gz; do
+            curl -fsSL "$online/$f" -o "dati-elaborati/app/meteo/$f" || cp "app/public/dati/meteo/$f" "dati-elaborati/app/meteo/$f"
+          done
+
+      - name: Meteo dentro l'app
+        run: cp dati-elaborati/app/meteo/oggi.json dati-elaborati/app/meteo/punti.bin.gz app/public/dati/meteo/
+
+      - name: Node per l'app
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Prova delle formule e costruzione
+        working-directory: app
+        run: |
+          npm ci
+          npm test
+          npm run build
+
+      - name: Mappe, strati e regole per i motori di ricerca
+        run: |
+          mkdir -p app/dist/dati/mappa app/dist/dati/strati
+          cp dati-app/mappa/*.pmtiles app/dist/dati/mappa/
+          cp dati-app/strati/*.pmtiles app/dist/dati/strati/
+          printf 'User-agent: *\nDisallow: /\n' > app/dist/robots.txt
+          echo "Sito: $(du -sh app/dist | cut -f1)" >> "$GITHUB_STEP_SUMMARY"
+          echo "Meteo: $(python -c "import json; d=json.load(open('app/dist/dati/meteo/oggi.json')); print(d['oggi'], '· corsa', d['corsa_del_modello'])")" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: app/dist
+
+  pubblica:
+    needs: costruisci
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.pagine.outputs.page_url }}
+    steps:
+      - id: pagine
+        uses: actions/deploy-pages@v5

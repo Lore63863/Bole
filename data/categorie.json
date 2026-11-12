@@ -1,0 +1,202 @@
+{
+ "1": {
+  "regione": "Piemonte",
+  "codice": "AB",
+  "categoria": "Abetine"
+ },
+ "2": {
+  "regione": "Piemonte",
+  "codice": "AF",
+  "categoria": "Acero-tiglio-frassineti"
+ },
+ "3": {
+  "regione": "Piemonte",
+  "codice": "AN",
+  "categoria": "Alneti planiziali e montani"
+ },
+ "4": {
+  "regione": "Piemonte",
+  "codice": "AS",
+  "categoria": "Arbusteti planiziali, collinari e montani"
+ },
+ "5": {
+  "regione": "Piemonte",
+  "codice": "BS",
+  "categoria": "Boscaglie pioniere e d'invasione"
+ },
+ "6": {
+  "regione": "Piemonte",
+  "codice": "CA",
+  "categoria": "Castagneti"
+ },
+ "7": {
+  "regione": "Piemonte",
+  "codice": "CE",
+  "categoria": "Cerrete"
+ },
+ "8": {
+  "regione": "Piemonte",
+  "codice": "FA",
+  "categoria": "Faggete"
+ },
+ "9": {
+  "regione": "Piemonte",
+  "codice": "LC",
+  "categoria": "Lariceti e cembrete"
+ },
+ "10": {
+  "regione": "Piemonte",
+  "codice": "OS",
+  "categoria": "Orno-ostrieti"
+ },
+ "11": {
+  "regione": "Piemonte",
+  "codice": "OV",
+  "categoria": "Arbusteti subalpini"
+ },
+ "12": {
+  "regione": "Piemonte",
+  "codice": "PE",
+  "categoria": "Peccete"
+ },
+ "13": {
+  "regione": "Piemonte",
+  "codice": "PM",
+  "categoria": "Pinete di pino marittimo"
+ },
+ "14": {
+  "regione": "Piemonte",
+  "codice": "PN",
+  "categoria": "Pinete di pino montano"
+ },
+ "15": {
+  "regione": "Piemonte",
+  "codice": "PS",
+  "categoria": "Pinete di pino silvestre"
+ },
+ "16": {
+  "regione": "Piemonte",
+  "codice": "QC",
+  "categoria": "Querco-carpineti"
+ },
+ "17": {
+  "regione": "Piemonte",
+  "codice": "QR",
+  "categoria": "Querceti di rovere"
+ },
+ "18": {
+  "regione": "Piemonte",
+  "codice": "QV",
+  "categoria": "Querceti di roverella"
+ },
+ "19": {
+  "regione": "Piemonte",
+  "codice": "RB",
+  "categoria": "Robinieti"
+ },
+ "20": {
+  "regione": "Piemonte",
+  "codice": "RI",
+  "categoria": "Rimboschimenti"
+ },
+ "21": {
+  "regione": "Piemonte",
+  "codice": "SP",
+  "categoria": "Saliceti e pioppeti ripari"
+ },
+ "101": {
+  "regione": "Liguria",
+  "codice": "AB",
+  "categoria": "Abetine di abete bianco"
+ },
+ "102": {
+  "regione": "Liguria",
+  "codice": "AI",
+  "categoria": "Non classificabile per incendio recente"
+ },
+ "103": {
+  "regione": "Liguria",
+  "codice": "AM",
+  "categoria": "Arbusteti collinari, montani e subalpini"
+ },
+ "104": {
+  "regione": "Liguria",
+  "codice": "BS",
+  "categoria": "Boscaglie pioniere e d'invasione"
+ },
+ "105": {
+  "regione": "Liguria",
+  "codice": "CA",
+  "categoria": "Castagneti"
+ },
+ "106": {
+  "regione": "Liguria",
+  "codice": "CE",
+  "categoria": "Cerrete"
+ },
+ "107": {
+  "regione": "Liguria",
+  "codice": "CP",
+  "categoria": "Cespuglieti"
+ },
+ "108": {
+  "regione": "Liguria",
+  "codice": "FA",
+  "categoria": "Faggete"
+ },
+ "109": {
+  "regione": "Liguria",
+  "codice": "FR",
+  "categoria": "Formazioni riparie"
+ },
+ "110": {
+  "regione": "Liguria",
+  "codice": "LC",
+  "categoria": "Lariceti"
+ },
+ "111": {
+  "regione": "Liguria",
+  "codice": "LE",
+  "categoria": "Leccete e sugherete"
+ },
+ "112": {
+  "regione": "Liguria",
+  "codice": "LM",
+  "categoria": "Boschi di latifoglie mesofile"
+ },
+ "113": {
+  "regione": "Liguria",
+  "codice": "MM",
+  "categoria": "Arbusteti e macchie termomediterranee"
+ },
+ "114": {
+  "regione": "Liguria",
+  "codice": "NA",
+  "categoria": "Non attribuito (aree non boscate)"
+ },
+ "115": {
+  "regione": "Liguria",
+  "codice": "OS",
+  "categoria": "Orno-ostrieti"
+ },
+ "116": {
+  "regione": "Liguria",
+  "codice": "PC",
+  "categoria": "Pinete costiere e mediterranee"
+ },
+ "117": {
+  "regione": "Liguria",
+  "codice": "PM",
+  "categoria": "Pinete montane"
+ },
+ "118": {
+  "regione": "Liguria",
+  "codice": "QU",
+  "categoria": "Querceti di rovere e di roverella"
+ },
+ "119": {
+  "regione": "Liguria",
+  "codice": "RI",
+  "categoria": "Rimboschimenti"
+ }
+}

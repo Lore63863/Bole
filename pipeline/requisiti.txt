@@ -1,0 +1,4 @@
+# Pacchetti per il lavoro automatico del meteo (pipeline/previsione.py), provati il 12 novembre 2026.
+numpy==2.5.4
+requests==2.34.2
+omfiles[grids]==1.2.0

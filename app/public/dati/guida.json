@@ -1,0 +1,793 @@
+{
+ "aggiornato": "12 novembre 2026",
+ "sicurezza": [
+  "Prima di mangiarli, fai controllare i funghi al micologo dell'ASL: il servizio è gratuito. Porta tutto il raccolto, con i funghi interi, in un contenitore aerato.",
+  "Non esistono trucchi per riconoscere i funghi velenosi: aglio, argento, funghi mangiati dalle lumache o colore che cambia al taglio non dicono nulla.",
+  "Mangia funghi solo ben cotti e con moderazione; tienili in frigorifero e consumali entro 2 giorni dalla raccolta.",
+  "Niente funghi a bambini, donne in gravidanza o in allattamento e persone con malattie debilitanti.",
+  "Non raccogliere vicino a strade trafficate, discariche o industrie.",
+  "Se stai male dopo aver mangiato funghi, anche molte ore dopo, vai al Pronto soccorso o chiama il 112, portando i resti dei funghi."
+ ],
+ "specie": {
+  "porcino": {
+   "habitat": "Peccete, abetine, pinete di pino silvestre, faggete, castagneti e querceti; ambienti freschi senza ristagni, suolo acido. Da 300 a 2.000 m.",
+   "sosia": [
+    {
+     "nome": "Porcino malefico",
+     "scientifico": "Rubroboletus satanas",
+     "pericolo": "velenoso",
+     "differenze": "boleto tozzo dei boschi caldi di latifoglie, con pori e gambo rossi: dà forti disturbi gastrointestinali."
+    },
+    {
+     "nome": "Porcino del fiele",
+     "scientifico": "Tylopilus felleus",
+     "pericolo": "da evitare",
+     "differenze": "somiglia soprattutto al porcino estivo, ma è amarissimo: un solo esemplare rovina tutto il piatto."
+    }
+   ],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    },
+    {
+     "nome": "Scuola Sant'Anna di Pisa, La risorsa FUNGO in Alta Valle del Vara",
+     "url": "https://iris.santannapisa.it/retrieve/dd9e0b31-bbf4-709e-e053-3705fe0a83fd/148_vqr_Funghi.pdf"
+    }
+   ]
+  },
+  "porcino_nero": {
+   "habitat": "Castagneti, querceti di rovere e roverella, faggete; in Liguria anche cerrete. Luoghi caldi, soleggiati e ben drenati. Da 200 a 1.000 m, fino a 1.400 m in faggeta.",
+   "sosia": [
+    {
+     "nome": "Porcino malefico",
+     "scientifico": "Rubroboletus satanas",
+     "pericolo": "velenoso",
+     "differenze": "boleto tozzo dei boschi caldi di latifoglie, con pori e gambo rossi: dà forti disturbi gastrointestinali."
+    },
+    {
+     "nome": "Porcino del fiele",
+     "scientifico": "Tylopilus felleus",
+     "pericolo": "da evitare",
+     "differenze": "somiglia soprattutto al porcino estivo, ma è amarissimo: un solo esemplare rovina tutto il piatto."
+    }
+   ],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    },
+    {
+     "nome": "Scuola Sant'Anna di Pisa, La risorsa FUNGO in Alta Valle del Vara",
+     "url": "https://iris.santannapisa.it/retrieve/dd9e0b31-bbf4-709e-e053-3705fe0a83fd/148_vqr_Funghi.pdf"
+    }
+   ]
+  },
+  "porcino_estivo": {
+   "habitat": "Castagneti, querceti, faggete, betuleti e corileti, anche peccete e pinete; versanti caldi. Da 200 a 1.000 m, fino a 1.600 m nelle estati calde. È il primo porcino della stagione.",
+   "sosia": [
+    {
+     "nome": "Porcino malefico",
+     "scientifico": "Rubroboletus satanas",
+     "pericolo": "velenoso",
+     "differenze": "boleto tozzo dei boschi caldi di latifoglie, con pori e gambo rossi: dà forti disturbi gastrointestinali."
+    },
+    {
+     "nome": "Porcino del fiele",
+     "scientifico": "Tylopilus felleus",
+     "pericolo": "da evitare",
+     "differenze": "somiglia soprattutto al porcino estivo, ma è amarissimo: un solo esemplare rovina tutto il piatto."
+    }
+   ],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    },
+    {
+     "nome": "Scuola Sant'Anna di Pisa, La risorsa FUNGO in Alta Valle del Vara",
+     "url": "https://iris.santannapisa.it/retrieve/dd9e0b31-bbf4-709e-e053-3705fe0a83fd/148_vqr_Funghi.pdf"
+    }
+   ]
+  },
+  "porcino_rosso": {
+   "habitat": "Peccete, pinete di pino silvestre, castagneti, faggete e abete bianco; in Liguria soprattutto castagno e faggio. Da 400 a 1.400 m, fino a 1.800 m in pineta. Vuole umidità e temperature non alte.",
+   "sosia": [
+    {
+     "nome": "Porcino malefico",
+     "scientifico": "Rubroboletus satanas",
+     "pericolo": "velenoso",
+     "differenze": "boleto tozzo dei boschi caldi di latifoglie, con pori e gambo rossi: dà forti disturbi gastrointestinali."
+    },
+    {
+     "nome": "Porcino del fiele",
+     "scientifico": "Tylopilus felleus",
+     "pericolo": "da evitare",
+     "differenze": "somiglia soprattutto al porcino estivo, ma è amarissimo: un solo esemplare rovina tutto il piatto."
+    }
+   ],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    },
+    {
+     "nome": "Scuola Sant'Anna di Pisa, La risorsa FUNGO in Alta Valle del Vara",
+     "url": "https://iris.santannapisa.it/retrieve/dd9e0b31-bbf4-709e-e053-3705fe0a83fd/148_vqr_Funghi.pdf"
+    }
+   ]
+  },
+  "gallinaccio": {
+   "habitat": "Peccete, abetine, pinete di pino silvestre, faggete, castagneti e querceti di rovere, su suoli acidi con lettiera. Fino a 2.000 m; raro in collina.",
+   "sosia": [
+    {
+     "nome": "Fungo dell'olivo",
+     "scientifico": "Omphalotus olearius",
+     "pericolo": "velenoso",
+     "differenze": "arancione, cresce a cespi su ceppaie e radici di olivo, castagno e quercia: è il fungo più spesso scambiato per il gallinaccio e dà forti disturbi gastrointestinali."
+    },
+    {
+     "nome": "Falso gallinaccio",
+     "scientifico": "Hygrophoropsis aurantiaca",
+     "pericolo": "da evitare",
+     "differenze": "arancione, sotto le conifere: poco digeribile."
+    }
+   ],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    },
+    {
+     "nome": "Il Fatto Alimentare, intossicazioni 2024 in Toscana (dati Usl Toscana centro)",
+     "url": "https://ilfattoalimentare.it/intossicazioni-funghi-toscana-2024.html"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    }
+   ]
+  },
+  "ovolo": {
+   "habitat": "Castagneti, querceti, ostrieti e faggete; in Liguria anche leccete e macchia. Versanti caldi e asciutti. Fino a 1.000 m in Piemonte, fino a 1.300 m in Liguria sui versanti a sud.",
+   "sosia": [
+    {
+     "nome": "Tignosa verdognola",
+     "scientifico": "Amanita phalloides",
+     "pericolo": "mortale",
+     "differenze": "da chiusa, a ovolo, si confonde con l'ovolo buono: per questo raccoglierlo chiuso è vietato. I primi sintomi arrivano dopo molte ore, quando il fegato è già colpito."
+    },
+    {
+     "nome": "Ovolo malefico",
+     "scientifico": "Amanita muscaria",
+     "pericolo": "velenoso",
+     "differenze": "cappello rosso con verruche bianche, che la pioggia può lavare via: allora somiglia all'ovolo buono."
+    }
+   ],
+   "consumo": [
+    "Raccolta vietata a ovolo chiuso, in Piemonte e in Liguria.",
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "ATS Liguria, Area 3: Funghi in sicurezza (2026)",
+     "url": "https://www.asl3.liguria.it/tutte-le-comunicazioni/comunicazioni-2026/6192-funghi-sicurezza-parola-esperto-2026.html"
+    },
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    }
+   ]
+  },
+  "mazza_di_tamburo": {
+   "habitat": "Radure, margini del bosco e prati, dalla pianura a circa 1.800 m.",
+   "sosia": [
+    {
+     "nome": "Piccole lepiote",
+     "scientifico": "Lepiota spp.",
+     "pericolo": "mortale",
+     "differenze": "cappello sotto i 10 cm, con squame: alcune hanno le stesse tossine mortali della tignosa verdognola. Non raccogliere mazze di tamburo piccole."
+    },
+    {
+     "nome": "Falsa mazza di tamburo",
+     "scientifico": "Chlorophyllum molybdites e Macrolepiota venenata",
+     "pericolo": "velenoso",
+     "differenze": "grandi e simili: danno forti disturbi gastrointestinali."
+    }
+   ],
+   "consumo": [
+    "Si mangia il cappello, ben cotto: il gambo è fibroso."
+   ],
+   "fonti": [
+    {
+     "nome": "Comunidad de Madrid, scheda Macrolepiota procera e sosia",
+     "url": "https://comunidad.madrid/sites/default/files/doc/sanidad/sali/a_macrolepiota_procera.pdf"
+    },
+    {
+     "nome": "Annali dell'Istituto Superiore di Sanità, Chlorophyllum molybdites",
+     "url": "https://annali.iss.it/index.php/anna/article/download/1502/854"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    }
+   ]
+  },
+  "chiodino": {
+   "habitat": "A cespi su ceppaie e radici di latifoglie e conifere, dalla pianura a circa 1.500 m, dopo le piogge d'autunno.",
+   "sosia": [
+    {
+     "nome": "Galerina marginata",
+     "scientifico": "Galerina marginata",
+     "pericolo": "mortale",
+     "differenze": "piccola e bruna, a gruppi su legno marcio, con anello: ha le stesse tossine della tignosa verdognola."
+    },
+    {
+     "nome": "Falso chiodino",
+     "scientifico": "Hypholoma fasciculare",
+     "pericolo": "velenoso",
+     "differenze": "a cespi sulle ceppaie, giallo zolfo con lamelle verdastre, amaro."
+    }
+   ],
+   "consumo": [
+    "Crudo o poco cotto è tossico: è la prima causa di accesso al Pronto soccorso per funghi.",
+    "Togli la parte dura del gambo, sbollenta 5 minuti, butta l'acqua, poi cuoci almeno 15-20 minuti.",
+    "Raccogli solo esemplari giovani, non dopo le gelate."
+   ],
+   "fonti": [
+    {
+     "nome": "ASL Biella, Non consumare i chiodini crudi (2025)",
+     "url": "https://aslbi.piemonte.it/wp-content/uploads/2025/08/Poster-NON-CONSUMARE-I-CHIODINI-CRUDI.pdf"
+    },
+    {
+     "nome": "Regione Piemonte, Funghi spontanei: precauzioni per la raccolta e il consumo (2025)",
+     "url": "https://www.regione.piemonte.it/web/node/21295"
+    },
+    {
+     "nome": "Centro Antiveleni di Milano e Ministero della Salute, I funghi: guida alla prevenzione delle intossicazioni",
+     "url": "https://legacy.ats-brescia.it/documents/3432658/8053835/Opuscolo+FunghiLow.pdf/49303c7b-70f2-9dfa-f4b0-c8df1012bce7"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    }
+   ]
+  },
+  "trombetta": {
+   "habitat": "Faggete, castagneti e querceti di rovere, su terreni argillosi e umidi, da 200 a 1.500 m.",
+   "sosia": [],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    }
+   ]
+  },
+  "steccherino": {
+   "habitat": "Molti boschi: leccete, ostrieti, castagneti, querceti, faggete, betuleti, abetine, peccete e pinete, da 100 a oltre 1.800 m. Regge il freddo.",
+   "sosia": [],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    }
+   ]
+  },
+  "sanguinello": {
+   "habitat": "Sotto i pini (silvestre, marittimo, d'Aleppo, nero) per Lactarius deliciosus e L. sanguifluus; sotto abete rosso L. deterrimus, sotto abete bianco L. salmonicolor. In Liguria dal mare a oltre 1.000 m.",
+   "sosia": [
+    {
+     "nome": "Lattario torminoso",
+     "scientifico": "Lactarius torminosus",
+     "pericolo": "velenoso",
+     "differenze": "latice bianco, orlo del cappello peloso, sotto le betulle: dà disturbi gastrointestinali."
+    },
+    {
+     "nome": "Lattario zonato",
+     "scientifico": "Lactarius zonarius",
+     "pericolo": "da evitare",
+     "differenze": "latice bianco, sotto latifoglie, acre."
+    }
+   ],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    },
+    {
+     "nome": "Rivista Micologica Romana, i lattari a latice colorato",
+     "url": "https://www.ameronlus.it/ojs/index.php/rmr/article/view/213/194"
+    },
+    {
+     "nome": "Scuola Sant'Anna di Pisa, scheda Lactarius torminosus",
+     "url": "https://iris.santannapisa.it/retrieve/dd9e0b31-bb9e-709e-e053-3705fe0a83fd/158_vqr_Funghi.pdf"
+    }
+   ]
+  },
+  "spugnole": {
+   "habitat": "Lungo i fiumi con pioppi, salici e olmi; sotto i frassini; frutteti e giardini; a volte aree bruciate. In primavera, su terreni sciolti e umidi.",
+   "sosia": [
+    {
+     "nome": "Falsa spugnola",
+     "scientifico": "Gyromitra esculenta",
+     "pericolo": "mortale",
+     "differenze": "cappello a forma di cervello invece che a celle: contiene giromitrina, tossica per il sistema nervoso e il fegato."
+    }
+   ],
+   "consumo": [
+    "Mai crude o poco cotte: cuocere almeno 20 minuti, in pentola scoperta.",
+    "Anche ben cotte, mangiarne poche: in quantità possono dare disturbi neurologici."
+   ],
+   "fonti": [
+    {
+     "nome": "Tox Info Suisse, Spugnole: una delizia non priva di rischi (2026)",
+     "url": "https://www.toxinfo.ch/spugnole_una_delizia_non_priva_di_rischi"
+    },
+    {
+     "nome": "Lagrange e Vernoux (2020), Toxins 12: 482",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7472412/"
+    },
+    {
+     "nome": "Associazione Micologica Bresadola (Saronno), I migliori funghi commestibili con sosia pericolosi",
+     "url": "https://www.ambientebio.it/wp-content/uploads/2019/10/Bollettino-38-2013.pdf"
+    }
+   ]
+  },
+  "prugnolo": {
+   "habitat": "Prati e margini vicino a rosacee spinose come il prugnolo, in primavera; da 200 a 1.700 m.",
+   "sosia": [
+    {
+     "nome": "Inocybe che arrossa",
+     "scientifico": "Inocybe erubescens",
+     "pericolo": "mortale",
+     "differenze": "stessi ambienti e stessa stagione, si macchia di rosso: contiene molta muscarina e può uccidere."
+    },
+    {
+     "nome": "Entoloma livido",
+     "scientifico": "Entoloma sinuatum",
+     "pericolo": "velenoso",
+     "differenze": "grande, con odore di farina come il prugnolo: forti disturbi gastrointestinali."
+    }
+   ],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Comunidad de Madrid, scheda Calocybe gambosa e sosia",
+     "url": "https://comunidad.madrid/sites/default/files/doc/sanidad/sali/a_calocybe_gambosa.pdf"
+    },
+    {
+     "nome": "EurekAlert, Calocybe gambosa e Inocybe erubescens",
+     "url": "https://www.eurekalert.org/multimedia/1133417"
+    }
+   ]
+  },
+  "dormiente": {
+   "habitat": "Abetine, faggete e castagneti misti, anche con abete rosso, pino silvestre e rovere; luoghi umidi (fossi, avvallamenti, vicino ai torrenti). Allo scioglimento della neve, semi-interrato sotto foglie e aghi; da 450 a 1.600 m.",
+   "sosia": [],
+   "consumo": [
+    "Solo ben cotto, con moderazione, come tutti i funghi selvatici."
+   ],
+   "fonti": [
+    {
+     "nome": "Regione Piemonte e IPLA, Funghi & tartufi: risorse del bosco",
+     "url": "https://www.regione.piemonte.it/web/media/14354/download"
+    }
+   ]
+  }
+ },
+ "centri": [
+  {
+   "nome": "Centro micologico di Torino",
+   "ente": "ASL Città di Torino",
+   "indirizzo": "via della Consolata 10",
+   "comune": "Torino",
+   "lon": 7.6825,
+   "lat": 45.0677,
+   "telefono": "011 566 3134",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Rivoli",
+   "ente": "ASL TO3",
+   "indirizzo": "via Balegno 6",
+   "comune": "Rivoli",
+   "lon": 7.5177,
+   "lat": 45.0697,
+   "telefono": "011 955 1757",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Pinerolo",
+   "ente": "ASL TO3",
+   "indirizzo": "via Bignone 15",
+   "comune": "Pinerolo",
+   "lon": 7.3319,
+   "lat": 44.8873,
+   "telefono": "0121 235 411",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Ciriè",
+   "ente": "ASL TO4",
+   "indirizzo": "via Cavour 29",
+   "comune": "Ciriè",
+   "lon": 7.6003,
+   "lat": 45.2353,
+   "telefono": "011 921 7615",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Settimo Torinese",
+   "ente": "ASL TO4",
+   "indirizzo": "via Regio Parco 64",
+   "comune": "Settimo Torinese",
+   "lon": 7.7713,
+   "lat": 45.1372,
+   "telefono": "011 821 2363",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Ivrea",
+   "ente": "ASL TO4",
+   "indirizzo": "via Aldisio 2",
+   "comune": "Ivrea",
+   "lon": 7.8748,
+   "lat": 45.4674,
+   "telefono": "0125 414 712",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Nichelino",
+   "ente": "ASL TO5",
+   "indirizzo": "via San Francesco d'Assisi 35",
+   "comune": "Nichelino",
+   "lon": 7.6466,
+   "lat": 44.9955,
+   "telefono": "011 680 6837",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Carmagnola",
+   "ente": "ASL TO5",
+   "indirizzo": "via Avvocato Ferrero 24",
+   "comune": "Carmagnola",
+   "lon": 7.7193,
+   "lat": 44.8456,
+   "telefono": "011 680 6837",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Chieri",
+   "ente": "ASL TO5",
+   "indirizzo": "via San Domenico 21",
+   "comune": "Chieri",
+   "lon": 7.8224,
+   "lat": 45.0139,
+   "telefono": "011 680 6837",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Vercelli",
+   "ente": "ASL VC",
+   "indirizzo": "largo Giusti 13",
+   "comune": "Vercelli",
+   "lon": 8.4228,
+   "lat": 45.3252,
+   "telefono": "335 179 3034",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Borgosesia",
+   "ente": "ASL VC",
+   "indirizzo": "via F. Ilorini 20",
+   "comune": "Borgosesia",
+   "lon": 8.2769,
+   "lat": 45.7167,
+   "telefono": "328 150 3596",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Biella",
+   "ente": "ASL BI",
+   "indirizzo": "via don Sturzo 20",
+   "comune": "Biella",
+   "lon": 8.0543,
+   "lat": 45.5664,
+   "telefono": "015 1515 9255",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Novara",
+   "ente": "ASL NO",
+   "indirizzo": "viale Roma 7",
+   "comune": "Novara",
+   "lon": 8.6197,
+   "lat": 45.4464,
+   "telefono": "0321 374 577",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Arona",
+   "ente": "ASL NO",
+   "indirizzo": "piazza De Filippi 2",
+   "comune": "Arona",
+   "lon": 8.5604,
+   "lat": 45.7598,
+   "telefono": "0322 516 527",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Domodossola",
+   "ente": "ASL VCO",
+   "indirizzo": "via Scapaccino 47",
+   "comune": "Domodossola",
+   "lon": 8.292,
+   "lat": 46.1153,
+   "telefono": "0324 491 677",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Omegna",
+   "ente": "ASL VCO",
+   "indirizzo": "via IV Novembre 294",
+   "comune": "Omegna",
+   "lon": 8.408,
+   "lat": 45.8798,
+   "telefono": "0323 868 040",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Verbania",
+   "ente": "ASL VCO",
+   "indirizzo": "viale Sant'Anna 83",
+   "comune": "Verbania",
+   "lon": 8.558,
+   "lat": 45.9344,
+   "telefono": "0323 541 441",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Cuneo",
+   "ente": "ASL CN1 (anche per ASL CN2)",
+   "indirizzo": "corso Francia 10",
+   "comune": "Cuneo",
+   "lon": 7.5427,
+   "lat": 44.3845,
+   "telefono": "0171 450 691",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Fossano",
+   "ente": "ASL CN1",
+   "indirizzo": "via Lancimano 39",
+   "comune": "Fossano",
+   "lon": 7.725,
+   "lat": 44.5493,
+   "telefono": "0172 699 245",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Savigliano",
+   "ente": "ASL CN1",
+   "indirizzo": "via Torino 143",
+   "comune": "Savigliano",
+   "lon": 7.6559,
+   "lat": 44.644,
+   "telefono": "0172 240 680",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Saluzzo",
+   "ente": "ASL CN1",
+   "indirizzo": "via Resistenza 16/F",
+   "comune": "Saluzzo",
+   "lon": 7.4926,
+   "lat": 44.6446,
+   "telefono": "0175 479 763",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Mondovì",
+   "ente": "ASL CN1",
+   "indirizzo": "Cascina Vignaben, località Beila",
+   "comune": "Mondovì",
+   "lon": 7.8205,
+   "lat": 44.39,
+   "telefono": "0174 676 146",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Alessandria",
+   "ente": "ASL AL",
+   "indirizzo": "via Venezia 6",
+   "comune": "Alessandria",
+   "lon": 8.6155,
+   "lat": 44.913,
+   "telefono": "0131 307 809",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Casale Monferrato",
+   "ente": "ASL AL",
+   "indirizzo": "via Palestro 41",
+   "comune": "Casale Monferrato",
+   "lon": 8.4498,
+   "lat": 45.1363,
+   "telefono": "0142 434 535",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Novi Ligure",
+   "ente": "ASL AL",
+   "indirizzo": "via Papa Giovanni XXIII 1",
+   "comune": "Novi Ligure",
+   "lon": 8.7896,
+   "lat": 44.7608,
+   "telefono": "0143 332 639",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Centro micologico di Asti",
+   "ente": "ASL AT",
+   "indirizzo": "via Conte Verde 125",
+   "comune": "Asti",
+   "lon": 8.2069,
+   "lat": 44.9005,
+   "telefono": "0141 484 920",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  },
+  {
+   "nome": "Ispettorato micologico di Bussana",
+   "ente": "ATS Liguria, Area 1",
+   "indirizzo": "via Aurelia 97, Bussana",
+   "comune": "Bussana",
+   "lon": 7.8378,
+   "lat": 43.8251,
+   "telefono": "0184 536 868",
+   "url": "https://www.asl1.liguria.it",
+   "orari": "su appuntamento"
+  },
+  {
+   "nome": "Ispettorato micologico di Imperia",
+   "ente": "ATS Liguria, Area 1",
+   "indirizzo": "via Acquarone 9",
+   "comune": "Imperia",
+   "lon": 8.0286,
+   "lat": 43.8862,
+   "telefono": "0183 537 633",
+   "url": "https://www.asl1.liguria.it",
+   "orari": "su appuntamento"
+  },
+  {
+   "nome": "Ispettorato micologico di Savona",
+   "ente": "ATS Liguria, Area 2",
+   "indirizzo": "via Collodi 13",
+   "comune": "Savona",
+   "lon": 8.481,
+   "lat": 44.308,
+   "telefono": "019 840 5912",
+   "url": "https://www.asl2.liguria.it/servizi-dalla-a-alla-z/655-controllo-micologico-per-raccoglitori-privati.html",
+   "orari": "su appuntamento"
+  },
+  {
+   "nome": "Ispettorato micologico di Valleggia",
+   "ente": "ATS Liguria, Area 2",
+   "indirizzo": "via Delfino 2, Valleggia di Quiliano",
+   "comune": "Valleggia",
+   "lon": 8.4287,
+   "lat": 44.2837,
+   "telefono": "019 840 5912",
+   "url": "https://www.asl2.liguria.it/servizi-dalla-a-alla-z/655-controllo-micologico-per-raccoglitori-privati.html",
+   "orari": "su appuntamento"
+  },
+  {
+   "nome": "Ispettorato micologico di Albenga",
+   "ente": "ATS Liguria, Area 2",
+   "indirizzo": "via Trieste 54",
+   "comune": "Albenga",
+   "lon": 8.2131,
+   "lat": 44.0493,
+   "telefono": "0182 546 258",
+   "url": "https://www.asl2.liguria.it/servizi-dalla-a-alla-z/655-controllo-micologico-per-raccoglitori-privati.html",
+   "orari": "su appuntamento"
+  },
+  {
+   "nome": "Ispettorato micologico di Genova",
+   "ente": "ATS Liguria, Area 3",
+   "indirizzo": "via Frugoni 27",
+   "comune": "Genova",
+   "lon": 8.9339,
+   "lat": 44.4073,
+   "telefono": "328 047 4988",
+   "url": "https://www.asl3.liguria.it/tutte-le-comunicazioni/comunicazioni-2026/6192-funghi-sicurezza-parola-esperto-2026.html",
+   "orari": "dal 1° settembre al 15 novembre: lunedì e giovedì 11-12.30"
+  },
+  {
+   "nome": "Ispettorato micologico di Chiavari",
+   "ente": "ATS Liguria, Area 4",
+   "indirizzo": "corso Dante 163, 1° piano",
+   "comune": "Chiavari",
+   "lon": 9.3245,
+   "lat": 44.3176,
+   "telefono": "0185 329 012",
+   "url": "https://www.asl4.liguria.it",
+   "orari": "su appuntamento"
+  },
+  {
+   "nome": "Ispettorato micologico della Spezia",
+   "ente": "ATS Liguria, Area 5",
+   "indirizzo": "via Fiume 137, 1° piano",
+   "comune": "La Spezia",
+   "lon": 9.8217,
+   "lat": 44.1034,
+   "telefono": "366 901 8874",
+   "url": "https://www.asl5.liguria.it",
+   "orari": "su appuntamento, da settembre a novembre"
+  }
+ ],
+ "centri_nota": "Giorni e orari cambiano con la stagione e quasi sempre serve l'appuntamento: telefona prima. La posizione dei centri è quella del paese (OpenStreetMap). Elenchi della Regione Piemonte e delle Aree di ATS Liguria, controllati il 12 novembre 2026.",
+ "fonti": [
+  {
+   "nome": "Regione Piemonte, Funghi spontanei: precauzioni per la raccolta e il consumo (2025)",
+   "url": "https://www.regione.piemonte.it/web/node/21295"
+  },
+  {
+   "nome": "ATS Liguria, Area 3: Funghi in sicurezza (2026)",
+   "url": "https://www.asl3.liguria.it/tutte-le-comunicazioni/comunicazioni-2026/6192-funghi-sicurezza-parola-esperto-2026.html"
+  },
+  {
+   "nome": "Centro Antiveleni di Milano e Ministero della Salute, I funghi: guida alla prevenzione delle intossicazioni",
+   "url": "https://legacy.ats-brescia.it/documents/3432658/8053835/Opuscolo+FunghiLow.pdf/49303c7b-70f2-9dfa-f4b0-c8df1012bce7"
+  },
+  {
+   "nome": "Regione Piemonte, Centri di controllo micologico",
+   "url": "https://www.regione.piemonte.it/web/media/310/download"
+  }
+ ]
+}

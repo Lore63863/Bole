@@ -1,0 +1,27 @@
+{
+  "name": "bole",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Bolé: dove e quando nascono i funghi in Piemonte e Liguria (uso personale, non commerciale)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "node --experimental-strip-types tests/parita/confronta.mts tests/parita/casi.json public/dati/modello.json",
+    "prova:iphone": "node tests/funzioni.mjs http://127.0.0.1:4173/ schermate && node tests/testi.mjs http://127.0.0.1:4173/ schermate",
+    "prova:senza-rete": "node tests/senza_rete.mjs http://127.0.0.1:4173/ schermate",
+    "prova:gruppo": "VITE_CONDIVISIONE=http://127.0.0.1:8788 vite build --outDir dist-prova --emptyOutDir && (vite preview --outDir dist-prova --port 4173 --strictPort & sleep 3; node tests/ritrovamenti.mjs http://127.0.0.1:4173/ schermate ../condivisione; s=$?; kill %1; exit $s)"
+  },
+  "dependencies": {
+    "@protomaps/basemaps": "^5.7.2",
+    "maplibre-gl": "^6.18.0",
+    "pmtiles": "^4.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vite-plugin-pwa": "^2.0.0"
+  }
+}

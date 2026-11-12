@@ -1,0 +1,15 @@
+specie,nome,scientifico,porcini,q0,q1,q2,q3,lig_q0,lig_q1,lig_q2,lig_q3,suolo,margine_fuori,margine_dentro,prato,arbusti,alberi_fuori,etichetta_quota,etichetta_suolo
+porcino,Porcino,Boletus edulis,1,200,400,1900,2100,,,,,acido,0,0,0,0,0,L+O,L
+porcino_nero,Porcino nero,Boletus aereus,1,100,300,1000,1400,,,,,indifferente,0,0,0,0,0,L+O,S
+porcino_estivo,Porcino estivo,Boletus reticulatus,1,100,300,1000,1600,,,,,indifferente,0,0,0,0,0,L+O,S
+porcino_rosso,Porcino rosso,Boletus pinophilus,1,300,500,1400,1800,,,,,acido,0,0,0,0,0,L+O,L
+gallinaccio,Gallinaccio,Cantharellus cibarius,0,0,500,1900,2100,,,,,acido,0,0,0,0,0,L+O,L
+ovolo,Ovolo buono,Amanita caesarea,0,0,0,1000,1200,0,0,1000,1300,acido,0,0,0,0,0,L+O,L
+mazza_di_tamburo,Mazza di tamburo,Macrolepiota procera,0,0,0,1700,1900,,,,,indifferente,0.6,0.6,0.3,0.3,0.3,O,S
+chiodino,Chiodino,Armillaria mellea s.l.,0,0,0,1400,1600,,,,,indifferente,0,0,0,0,0,O,S
+trombetta,Trombetta dei morti,Craterellus cornucopioides,0,100,300,1400,1600,,,,,indifferente,0,0,0,0,0,O,S
+steccherino,Steccherino dorato,Hydnum repandum,0,0,200,1800,2000,,,,,indifferente,0,0,0,0,0,L+O,S
+sanguinello,Sanguinello,Lactarius deliciosus e affini,0,0,0,1600,1800,,,,,indifferente,0,0,0,0,0,L+O,S
+spugnole,Spugnole,Morchella spp.,0,0,0,1700,1900,,,,,indifferente,0,0,0,0,0.3,O,S
+prugnolo,Prugnolo,Calocybe gambosa,0,100,300,1600,1800,,,,,indifferente,0.6,0.3,0.3,0.6,0.3,O,S
+dormiente,Dormiente,Hygrophorus marzuolus,0,350,550,1500,1700,500,700,1500,1700,indifferente,0,0,0,0,0,L+O,S

@@ -1,0 +1,41 @@
+regione,codice,categoria,porcino,porcino_nero,porcino_estivo,porcino_rosso,gallinaccio,ovolo,mazza_di_tamburo,chiodino,trombetta,steccherino,sanguinello,spugnole,prugnolo,dormiente
+Piemonte,AB,Abetine,1,0,0,1,1,0,0,0.6,0.3,1,0.6,0.3,0,1
+Piemonte,AF,Acero-tiglio-frassineti,0.3,0,0.3,0,0,0,0.3,0.6,0,0,0,0.6,0,0
+Piemonte,AN,Alneti planiziali e montani,0,0,0,0,0,0,0,0.3,0,0,0,0.3,0,0
+Piemonte,AS,"Arbusteti planiziali, collinari e montani",0,0,0,0,0,0,0.3,0,0,0,0,0,0.6,0
+Piemonte,BS,Boscaglie pioniere e d'invasione,1,0,0.6,0.6,0.3,0,0.6,0.3,0,1,0,0.3,0.3,0
+Piemonte,CA,Castagneti,1,1,1,1,1,1,0.6,0.6,1,1,0,0,0,0.6
+Piemonte,CE,Cerrete,0.3,0.6,0.6,0,0.3,0.6,0.3,0.6,0.3,0.6,0,0,0,0
+Piemonte,FA,Faggete,1,0.6,0.6,1,1,0.6,0.3,0.6,1,1,0,0,0,0.6
+Piemonte,LC,Lariceti e cembrete,0.3,0,0,0.3,0.3,0,0.3,0.3,0,0.3,0,0.3,0,0
+Piemonte,OS,Orno-ostrieti,0,0.3,0.3,0,0,0.6,0.3,0.3,0.3,1,0,0.3,0.3,0
+Piemonte,OV,Arbusteti subalpini,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Piemonte,PE,Peccete,1,0,0.6,1,1,0,0,0.6,0.3,1,0.6,0.3,0,0.6
+Piemonte,PM,Pinete di pino marittimo,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0,0.3,1,0,0,0
+Piemonte,PN,Pinete di pino montano,0.3,0,0,0.3,0.3,0,0,0,0,0.3,0.6,0,0,0
+Piemonte,PS,Pinete di pino silvestre,1,0,0.6,1,1,0,0.3,0.3,0,1,1,0,0,0.6
+Piemonte,QC,Querco-carpineti,0.3,0.3,0.6,0,0.3,1,0.6,0.6,0.3,0.3,0,0.3,0,0
+Piemonte,QR,Querceti di rovere,1,1,1,0,1,1,0.6,0.6,1,1,0,0,0,0.3
+Piemonte,QV,Querceti di roverella,1,1,1,0,0.6,1,0.6,0.6,0.3,1,0,0,0.3,0
+Piemonte,RB,Robinieti,0,0,0,0,0,0,0.6,0.6,0,0,0,0.3,0,0
+Piemonte,RI,Rimboschimenti,0.3,0,0.3,0.3,0.3,0,0.3,0.3,0,0.3,0.6,0,0,0
+Piemonte,SP,Saliceti e pioppeti ripari,0,0,0,0,0,0,0,0.6,0,0,0,0.6,0,0
+Liguria,AB,Abetine di abete bianco,1,0,0,1,1,0,0,0.6,0.3,1,0.6,0.3,0,1
+Liguria,AI,Non classificabile per incendio recente,0,0,0,0,0,0,0,0,0,0,0,0.6,0,0
+Liguria,AM,"Arbusteti collinari, montani e subalpini",0,0,0,0,0,0,0.3,0,0,0,0,0,0.6,0
+Liguria,BS,Boscaglie pioniere e d'invasione,1,0,0.6,0.6,0.3,0,0.6,0.3,0,1,0,0.3,0.3,0
+Liguria,CA,Castagneti,1,1,1,1,1,1,0.6,0.6,1,1,0,0,0,0.6
+Liguria,CE,Cerrete,0.3,1,1,0,0.3,0.6,0.3,0.6,0.3,0.6,0,0,0,0
+Liguria,CP,Cespuglieti,0,0,0,0,0,0,0.3,0,0,0,0,0,0.6,0
+Liguria,FA,Faggete,1,0.6,1,1,1,0.6,0.3,0.6,1,1,0,0,0,0.6
+Liguria,FR,Formazioni riparie,0,0,0,0,0,0,0,0.6,0,0,0,0.6,0,0
+Liguria,LC,Lariceti,0.3,0,0,0.3,0.3,0,0.3,0.3,0,0.3,0,0.3,0,0
+Liguria,LE,Leccete e sugherete,0,0.6,0.3,0,0,1,0,0.3,0,1,0,0,0,0
+Liguria,LM,Boschi di latifoglie mesofile,0.3,0,0.3,0,0,0,0.3,0.6,0.3,0.3,0,0.6,0,0
+Liguria,MM,Arbusteti e macchie termomediterranee,0,0.3,0,0,0,1,0.3,0,0,0,0,0,0,0
+Liguria,NA,Non attribuito (aree non boscate),0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Liguria,OS,Orno-ostrieti,0,0.3,0.3,0,0,0.6,0.3,0.3,0.3,1,0,0.3,0.3,0
+Liguria,PC,Pinete costiere e mediterranee,0,0.3,0.3,0,0.3,0.3,0.3,0.3,0,0.3,1,0,0,0
+Liguria,PM,Pinete montane,0.6,0,0.6,1,0.6,0,0.3,0.3,0,0.6,1,0,0,0.6
+Liguria,QU,Querceti di rovere e di roverella,1,1,1,0,0.6,1,0.6,0.6,0.6,1,0,0,0,0.3
+Liguria,RI,Rimboschimenti,0.3,0,0.3,0.3,0.3,0,0.3,0.3,0,0.3,0.6,0,0,0

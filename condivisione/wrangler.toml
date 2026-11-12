@@ -1,0 +1,27 @@
+# Bolé — server della condivisione (Cloudflare Workers, piano gratuito).
+# Si accende nella Fase 5: vedi README.md, "Come si accende".
+name = "bole-condivisione"
+main = "src/index.ts"
+compatibility_date = "2026-07-01"
+workers_dev = true
+preview_urls = false
+
+# Niente registro delle richieste sui server di Cloudflare: meno dati in giro.
+[observability]
+enabled = false
+
+[vars]
+# L'indirizzo dell'app su GitHub Pages (si scrive nella Fase 5). Altre pagine web non possono usarlo.
+ORIGINI = "https://DA-SCRIVERE-NELLA-FASE-5.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bole-condivisione"
+# Si crea con giurisdizione UE: npx wrangler d1 create bole-condivisione --jurisdiction eu
+database_id = "00000000-0000-0000-0000-000000000000"
+
+# Limite anti-abusi: al massimo 60 richieste al minuto dallo stesso indirizzo.
+[[ratelimits]]
+name = "LIMITE"
+namespace_id = "1001"
+simple = { limit = 60, period = 60 }

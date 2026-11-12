@@ -1,0 +1,27 @@
+# Bolé — file che non vanno nel repository
+node_modules/
+dist/
+dist-prova/
+schermate*/
+__pycache__/
+*.pyc
+.DS_Store
+
+# dati pesanti o di lavoro (restano sul computer; le mappe per l'app stanno nel ramo «dati»)
+dati-grezzi/
+dati-elaborati/
+app/public/dati/mappa/
+app/public/dati/strati/
+
+# server del gruppo: prove locali e segreti
+condivisione/.stato*/
+condivisione/.wrangler/
+condivisione/.dev.vars
+
+# file privati del progetto (restano solo sul computer)
+PROMPT-app-funghi.md
+docs/PIANO.md
+docs/fonti/
+docs/rete-domini.txt
+_to_delete/
+pubblicazione/

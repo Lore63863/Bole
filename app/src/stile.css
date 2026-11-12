@@ -1,0 +1,260 @@
+/* Bolé — colori e misure della bozza grafica (schermate "Mappa" e "Perché qui?").
+   Caratteri di sistema: niente richieste a servizi esterni, e su iPhone sono i più leggibili. */
+:root {
+  color-scheme: light;
+  --fondo: #f3f5f1;
+  --inchiostro: #14211b;
+  --testo-2: #4a5750;
+  --verde: #1e5b3f;
+  --verde-chiaro: #6f9580;
+  --bordo: #7f8c83;
+  --bordo-2: #c9d1c9;
+  --bianco: #ffffff;
+  --avviso-fondo: #fff1d6;
+  --avviso-bordo: #e3be7a;
+  --avviso-testo: #5c3200;
+  --picco-fondo: #fde9c8;
+  --picco-testo: #7a3306;
+  --pericolo: #9b1c1c;
+  --raggio: 14px;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--fondo); color: var(--inchiostro); }
+body { overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; }
+a { color: var(--verde); }
+.icona { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.nascosto { display: none !important; }
+
+/* --- struttura -------------------------------------------------------------------------------- */
+#app { position: fixed; inset: 0; display: flex; flex-direction: column; }
+.testata {
+  flex-shrink: 0; padding: calc(env(safe-area-inset-top) + 4px) 16px 2px; display: flex; align-items: center;
+  justify-content: space-between; gap: 8px; background: var(--fondo);
+}
+.marchio { display: flex; align-items: center; gap: 8px; color: var(--verde); }
+.marchio h1 { margin: 0; font-size: 26px; line-height: 32px; font-weight: 800; letter-spacing: -0.01em; color: var(--inchiostro); }
+.stato-dati {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 10px; border-radius: 15px;
+  border: 1px solid var(--bordo-2); background: var(--bianco); font-size: 12px; font-weight: 600; color: var(--testo-2);
+}
+.stato-dati.vecchi { border-color: var(--avviso-bordo); background: var(--avviso-fondo); color: var(--avviso-testo); }
+
+.riga-specie { flex-shrink: 0; display: flex; gap: 8px; padding: 6px 16px 10px; overflow-x: auto; scrollbar-width: none; }
+.riga-specie::-webkit-scrollbar { display: none; }
+.pillola {
+  flex: 0 0 auto; height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid var(--bordo);
+  background: var(--bianco); font-size: 15px; font-weight: 500; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;
+}
+.pillola[aria-pressed="true"] { background: var(--verde); border-color: var(--verde); color: var(--bianco); font-weight: 600; }
+
+.area-mappa { position: relative; flex: 1 1 auto; min-height: 0; background: #e2dfda; }
+#mappa { position: absolute; inset: 0; }
+
+/* --- sopra la mappa --------------------------------------------------------------------------- */
+.tasto-tondo {
+  position: absolute; right: 12px; width: 48px; height: 48px; border-radius: 24px; border: 1px solid var(--bordo);
+  background: var(--bianco); display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(20, 33, 27, 0.18);
+}
+.suggerimento {
+  position: absolute; left: 50%; top: 10px; transform: translateX(-50%); padding: 8px 14px; border-radius: 20px;
+  background: rgba(20, 33, 27, 0.86); color: var(--bianco); font-size: 13px; font-weight: 600; white-space: nowrap; pointer-events: none;
+}
+.legenda {
+  position: absolute; left: 10px; bottom: 10px; width: 210px; padding: 9px 11px; border-radius: 12px;
+  border: 1px solid var(--bordo-2); background: rgba(255, 255, 255, 0.96); display: flex; flex-direction: column; gap: 5px;
+}
+.legenda .titolo { font-size: 12px; font-weight: 700; }
+.legenda .scala { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+.legenda .scala div { height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(20, 33, 27, 0.35); }
+.legenda .estremi { display: flex; justify-content: space-between; font-size: 11px; color: var(--testo-2); }
+.legenda .riga { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--testo-2); }
+.maplibregl-ctrl-bottom-right { bottom: 0; }
+.maplibregl-ctrl-attrib { font-size: 11px; }
+
+/* --- pannello del giorno ---------------------------------------------------------------------- */
+.pannello { flex-shrink: 0; padding: 10px 16px 6px; background: var(--bianco); border-top: 1px solid var(--bordo-2); }
+.pannello .alto { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.pannello .etichetta { font-size: 12px; color: var(--testo-2); }
+.pannello .quando { font-size: 21px; line-height: 26px; font-weight: 800; }
+.pannello .quando small { font-size: 14px; font-weight: 500; color: var(--testo-2); margin-left: 6px; }
+.pannello .aff { font-size: 12px; color: var(--testo-2); }
+.pannello .aff b { color: var(--inchiostro); }
+.chip-picco {
+  flex-shrink: 0; margin-top: 2px; display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border-radius: 14px;
+  background: var(--picco-fondo); color: var(--picco-testo); font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.barre { display: grid; gap: 3px; height: 40px; align-items: end; margin-top: 8px; }
+.barre button { height: 100%; padding: 0; border: 0; background: none; display: flex; align-items: flex-end; }
+.barre span { display: block; width: 100%; min-height: 3px; border-radius: 2px; background: var(--verde-chiaro); }
+.barre .vuota span { background: var(--bianco); box-shadow: inset 0 0 0 1.5px var(--verde-chiaro); }
+.barre .scelto span { background: var(--verde); box-shadow: none; }
+.cursore { display: block; width: 100%; height: 36px; margin: 0; accent-color: var(--verde); }
+.sotto-cursore { display: grid; grid-template-columns: repeat(3, 1fr); font-size: 12px; color: var(--testo-2); }
+.sotto-cursore span:nth-child(2) { text-align: center; }
+.sotto-cursore span:nth-child(3) { text-align: right; }
+.frase { margin-top: 4px; font-size: 13px; line-height: 17px; color: var(--inchiostro); min-height: 17px; }
+
+/* --- schede in basso -------------------------------------------------------------------------- */
+.schede {
+  flex-shrink: 0; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--bianco);
+  border-top: 1px solid var(--bordo-2); padding-bottom: env(safe-area-inset-bottom);
+}
+.schede button {
+  position: relative; height: 56px; padding: 0; border: 0; background: none; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px; font-size: 11px; font-weight: 500; color: var(--testo-2);
+}
+.schede button[aria-current="page"] { color: var(--verde); font-weight: 700; }
+.schede button[aria-current="page"]::before {
+  content: ""; position: absolute; top: 0; left: 50%; width: 32px; height: 3px; margin-left: -16px; border-radius: 0 0 3px 3px; background: var(--verde);
+}
+
+/* --- fogli (Perché qui?, Vicino, Diario, Regole, Guida) --------------------------------------- */
+/* il foglio lascia libera la barra delle schede: si cambia sezione senza chiudere */
+.foglio {
+  position: fixed; top: 0; left: 0; right: 0; bottom: calc(57px + env(safe-area-inset-bottom)); z-index: 20;
+  display: flex; flex-direction: column; background: var(--fondo); padding-top: env(safe-area-inset-top);
+}
+.foglio .testa {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid var(--bordo-2); background: var(--bianco);
+}
+.foglio .testa h2 { margin: 0; font-size: 20px; line-height: 26px; }
+.foglio .testa .sotto { font-size: 12px; color: var(--testo-2); }
+.foglio .corpo { flex: 1 1 auto; overflow-y: auto; padding: 12px 16px 24px; -webkit-overflow-scrolling: touch; }
+.tasto-chiudi { width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--fondo); display: flex; align-items: center; justify-content: center; }
+.scheda {
+  background: var(--bianco); border: 1px solid var(--bordo-2); border-radius: var(--raggio); padding: 12px 14px; margin-bottom: 12px;
+}
+.scheda h3 { margin: 0 0 8px; font-size: 16px; }
+.scheda p { margin: 6px 0; font-size: 14px; line-height: 20px; }
+.valori { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; font-size: 14px; }
+.valori dt { color: var(--testo-2); }
+.valori dd { margin: 0; font-weight: 600; text-align: right; }
+.fonte { font-size: 11px; color: var(--testo-2); margin-top: 6px; }
+.tasto {
+  min-height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid var(--verde); background: var(--verde); color: var(--bianco);
+  font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;
+}
+.tasto.secondario { background: var(--bianco); color: var(--verde); }
+.fila-tasti { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.avviso-fisso {
+  display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; border: 1px solid #e0a3a3;
+  background: #fdeeee; color: #5b1010; font-size: 13px; line-height: 18px; margin-bottom: 12px;
+}
+.avviso {
+  display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--avviso-bordo);
+  background: var(--avviso-fondo); color: var(--avviso-testo); font-size: 13px; line-height: 18px; margin: 6px 0;
+}
+.classi-giorni { display: grid; grid-template-columns: repeat(15, 1fr); gap: 2px; margin-top: 6px; }
+.classi-giorni div { height: 22px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(20, 33, 27, 0.25); }
+.classi-giorni .vuota { background: repeating-linear-gradient(135deg, #fff 0 3px, #e6e9e5 3px 6px); }
+.elenco { list-style: none; margin: 0; padding: 0; }
+.elenco li { padding: 10px 0; border-bottom: 1px solid var(--bordo-2); }
+.elenco li:last-child { border-bottom: 0; }
+.campo { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; font-size: 14px; }
+.campo input, .campo select, .campo textarea {
+  font: inherit; min-height: 44px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--bordo); background: var(--bianco);
+}
+.grafico { width: 100%; height: auto; display: block; }
+
+/* --- pezzi dei fogli -------------------------------------------------------------------------- */
+.scheda h4 { margin: 10px 0 4px; font-size: 14px; }
+.etichetta { font-size: 12px; color: var(--testo-2); }
+.riga-scelte { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.pillola.piccola { height: 36px; padding: 0 12px; font-size: 14px; }
+.tasto.piccolo { min-height: 36px; padding: 0 12px; font-size: 14px; }
+.chip-classe {
+  flex-shrink: 0; display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 14px; font-weight: 700;
+  font-size: 13px; box-shadow: inset 0 0 0 1px rgba(20, 33, 27, 0.3); white-space: nowrap;
+}
+.classifica { counter-reset: zona; }
+.classifica li { counter-increment: zona; position: relative; padding-left: 28px; }
+.classifica li::before {
+  content: counter(zona); position: absolute; left: 0; top: 11px; width: 20px; height: 20px; border-radius: 10px;
+  background: var(--verde); color: var(--bianco); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.punti { margin: 4px 0; padding-left: 18px; font-size: 14px; line-height: 20px; }
+.punti li { margin: 3px 0; }
+.voce-menu {
+  width: 100%; min-height: 56px; border: 0; background: none; padding: 4px 0; display: flex; align-items: center; gap: 12px;
+  text-align: left; color: var(--inchiostro);
+}
+.voce-menu > span { flex: 1; display: flex; flex-direction: column; }
+.voce-menu small { font-size: 12px; color: var(--testo-2); }
+.voce-menu .icona:first-child { color: var(--verde); }
+.interruttore { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: 15px; border-bottom: 1px solid var(--bordo-2); }
+.interruttore:last-child { border-bottom: 0; }
+.interruttore input { width: 22px; height: 22px; accent-color: var(--verde); }
+.consiglio-home {
+  position: absolute; left: 10px; right: 10px; top: 52px; display: flex; gap: 8px; align-items: center; padding: 8px 6px 8px 12px;
+  border-radius: 12px; background: rgba(255, 255, 255, 0.97); border: 1px solid var(--bordo-2); font-size: 13px; line-height: 18px;
+}
+.consiglio-home button, .avviso-tramonto button {
+  flex-shrink: 0; min-width: 40px; min-height: 40px; border: 0; border-radius: 20px; background: var(--fondo); display: flex; align-items: center; justify-content: center;
+}
+.avviso-tramonto {
+  position: fixed; z-index: 30; left: 8px; right: 8px; top: calc(env(safe-area-inset-top) + 6px); display: flex; gap: 8px; align-items: center;
+  padding: 8px 8px 8px 12px; border-radius: 12px; background: #fdeeee; border: 1px solid #e0a3a3; color: #5b1010; font-size: 14px; line-height: 18px;
+  box-shadow: 0 2px 8px rgba(20, 33, 27, 0.2);
+}
+.avviso-tramonto span { flex: 1; }
+.avviso-tramonto button { padding: 0 10px; font-weight: 600; color: #5b1010; background: #fff; }
+.centro { display: flex; justify-content: center; }
+.bussola { width: 180px; height: 180px; margin: 4px 0 8px; }
+.bussola .rosa, .bussola .freccia-auto { transition: transform 0.2s linear; }
+details.specie summary { list-style: none; display: flex; flex-direction: column; cursor: pointer; min-height: 40px; justify-content: center; }
+details.specie summary::-webkit-details-marker { display: none; }
+details.specie summary .nome { font-size: 16px; font-weight: 700; }
+details.specie summary .scientifico { font-size: 13px; font-style: italic; color: var(--testo-2); }
+details.specie[open] summary { margin-bottom: 6px; border-bottom: 1px solid var(--bordo-2); padding-bottom: 6px; }
+.pericolo { display: inline-block; padding: 0 6px; border-radius: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.02em; vertical-align: 1px; }
+.pericolo.mortale { background: var(--pericolo); color: var(--bianco); }
+.pericolo.velenoso { background: #f6d0d0; color: #5b1010; }
+.pericolo.da-evitare { background: #e8ebe7; color: var(--inchiostro); }
+progress { height: 10px; accent-color: var(--verde); }
+.fila-tasti.compatta { gap: 4px; margin-top: 6px; flex-wrap: nowrap; }
+.fila-tasti.compatta .tasto.piccolo { min-height: 34px; padding: 0 8px; font-size: 13px; gap: 3px; white-space: nowrap; }
+
+/* --- punti sulla mappa, mirino, diario, gruppo (12 novembre) ----------------------------------- */
+#mappa { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.mirino { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; pointer-events: none; z-index: 5; }
+.barra-punto {
+  position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 6; padding: 10px 12px; border-radius: 14px;
+  background: rgba(255, 255, 255, 0.98); border: 1px solid var(--bordo-2); box-shadow: 0 2px 10px rgba(20, 33, 27, 0.25);
+  display: flex; flex-direction: column; gap: 4px; font-size: 14px;
+}
+.barra-punto .testo { font-size: 13px; color: var(--testo-2); font-variant-numeric: tabular-nums; }
+.barra-punto .fila-tasti { margin-top: 4px; }
+.riga-voce {
+  width: 100%; min-height: 48px; padding: 0; border: 0; background: none; display: flex; align-items: center; gap: 8px;
+  text-align: left; color: var(--inchiostro);
+}
+.riga-voce .testo { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.riga-voce small { font-size: 13px; color: var(--testo-2); }
+.riga-voce .icona:last-child { color: var(--testo-2); }
+.codice { font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 16px; letter-spacing: 0.04em; }
+.statistiche h4 { margin: 12px 0 6px; }
+.barre-orizzontali { display: grid; grid-template-columns: max-content 1fr 2.2em; gap: 4px 8px; align-items: center; font-size: 13px; }
+.barre-orizzontali b { text-align: right; }
+.barre-orizzontali .barra { height: 10px; border-radius: 0 4px 4px 0; background: var(--fondo); overflow: hidden; }
+.barre-orizzontali .barra span { display: block; height: 100%; border-radius: 0 4px 4px 0; background: var(--verde-chiaro); }
+.mesi { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; align-items: end; }
+.mesi > div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.mesi small { font-size: 11px; color: var(--testo-2); min-height: 14px; }
+.mesi .colonna { width: 100%; height: 48px; display: flex; align-items: flex-end; }
+.mesi .colonna span { display: block; width: 100%; border-radius: 4px 4px 0 0; background: var(--verde-chiaro); }
+.legenda-classi, .riga-classi .celle { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; }
+.legenda-classi { margin-left: 92px; font-size: 9px; line-height: 11px; color: var(--testo-2); text-align: center; }
+.riga-classi { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+.riga-classi .nome { width: 86px; flex-shrink: 0; font-size: 12px; }
+.riga-classi .celle { flex: 1; }
+.riga-classi .celle span {
+  height: 24px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(20, 33, 27, 0.25);
+}
+.scelta-punto .legenda, .scelta-punto .tasto-tondo, .scelta-punto .suggerimento, .scelta-punto .consiglio-home { display: none; }
+.consiglio-home button.installa { min-width: 0; padding: 0 14px; background: var(--verde); color: var(--bianco); font-weight: 600; }

@@ -1,0 +1,143 @@
+# Bolé — server del gruppo su Cloudflare (piano gratuito).
+#
+# Si lancia a mano la prima volta (scheda Actions → «Server del gruppo» → Run workflow), dopo aver
+# messo nei segreti del repository CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID (vedi condivisione/README.md).
+# Poi riparte da solo quando cambia il codice del server.
+#
+# La prima volta: sceglie un sottodominio neutro (bole-funghi), crea il database in UE, la tabella e il
+# segreto PEPE (casuale, non lo vede nessuno), pubblica il server e scrive il suo indirizzo in
+# app/.env.production, così il sito si ricostruisce con il gruppo acceso.
+# Le volte dopo: aggiorna solo il codice. Non cancella mai dati.
+name: Server del gruppo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "condivisione/src/**"
+      - "condivisione/wrangler.toml"
+      - "condivisione/schema.sql"
+      - ".github/workflows/server.yml"
+
+permissions:
+  contents: write   # per scrivere l'indirizzo del server in app/.env.production
+  actions: write    # per far ripartire «Pubblica il sito»
+
+concurrency:
+  group: server
+  cancel-in-progress: false
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      WRANGLER_SEND_METRICS: "false"
+    defaults:
+      run:
+        working-directory: condivisione
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Ci sono le chiavi di Cloudflare?
+        id: chiavi
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "pronte=si" >> "$GITHUB_OUTPUT"
+          elif [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "::error::Mancano i segreti CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID: vedi condivisione/README.md, «Come si accende»."
+            exit 1
+          else
+            echo "::notice::Server del gruppo non ancora acceso (mancano le chiavi di Cloudflare): niente da fare."
+            echo "pronte=no" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v7
+        if: steps.chiavi.outputs.pronte == 'si'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: condivisione/package-lock.json
+
+      - name: Strumenti e controllo dei tipi
+        if: steps.chiavi.outputs.pronte == 'si'
+        run: |
+          npm ci
+          npm run controlla
+
+      - name: Sottodominio workers.dev (solo la prima volta)
+        if: steps.chiavi.outputs.pronte == 'si'
+        id: sotto
+        run: |
+          api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/subdomain"
+          auth="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          nome=$(curl -sS -H "$auth" "$api" | jq -r '.result.subdomain // empty')
+          if [ -z "$nome" ]; then
+            for prova in bole-funghi "bole-funghi-$(openssl rand -hex 2)" "bole-funghi-$(openssl rand -hex 3)"; do
+              if curl -sS -X PUT -H "$auth" -H "Content-Type: application/json" --data "{\"subdomain\":\"$prova\"}" "$api" | jq -e '.success' >/dev/null; then
+                nome=$prova; break
+              fi
+            done
+          fi
+          if [ -z "$nome" ]; then echo "::error::Non riesco a scegliere il sottodominio workers.dev"; exit 1; fi
+          echo "nome=$nome" >> "$GITHUB_OUTPUT"
+          echo "Sottodominio: $nome"
+
+      - name: Database in UE e tabella (la tabella solo se manca)
+        if: steps.chiavi.outputs.pronte == 'si'
+        run: |
+          id=$(npx wrangler d1 list --json | jq -r '.[] | select(.name=="bole-condivisione") | .uuid')
+          if [ -z "$id" ]; then
+            npx wrangler d1 create bole-condivisione --jurisdiction eu
+            id=$(npx wrangler d1 list --json | jq -r '.[] | select(.name=="bole-condivisione") | .uuid')
+          fi
+          sed -i "s/^database_id = .*/database_id = \"$id\"/" wrangler.toml
+          npx wrangler d1 execute bole-condivisione --remote --file schema.sql
+
+      - name: Sito ammesso (solo l'indirizzo dell'app)
+        if: steps.chiavi.outputs.pronte == 'si'
+        run: sed -i "s#^ORIGINI = .*#ORIGINI = \"https://${GITHUB_REPOSITORY_OWNER,,}.github.io\"#" wrangler.toml
+
+      - name: Pubblica il server
+        if: steps.chiavi.outputs.pronte == 'si'
+        run: npx wrangler deploy
+
+      - name: Segreto PEPE (solo la prima volta)
+        if: steps.chiavi.outputs.pronte == 'si'
+        run: |
+          if ! npx wrangler secret list | grep -q '"PEPE"'; then
+            openssl rand -hex 32 | npx wrangler secret put PEPE
+          fi
+
+      - name: Il server risponde?
+        if: steps.chiavi.outputs.pronte == 'si'
+        id: prova
+        run: |
+          url="https://bole-condivisione.${{ steps.sotto.outputs.nome }}.workers.dev"
+          for _ in $(seq 1 20); do
+            if curl -fsS "$url/v1/stato" | jq -e '.ok' >/dev/null; then break; fi
+            sleep 6
+          done
+          curl -fsS "$url/v1/stato"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Server del gruppo: $url" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Indirizzo del server nell'app (se è nuovo) e nuova pubblicazione del sito
+        if: steps.chiavi.outputs.pronte == 'si'
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          riga="VITE_CONDIVISIONE=${{ steps.prova.outputs.url }}"
+          if [ "$(cat app/.env.production 2>/dev/null)" != "$riga" ]; then
+            echo "$riga" > app/.env.production
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add app/.env.production
+            git commit -m "Indirizzo del server del gruppo"
+            git push
+            gh workflow run pubblica.yml --ref main
+          fi
