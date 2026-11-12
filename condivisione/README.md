@@ -66,7 +66,9 @@ falliscono fino al giorno dopo: non arrivano addebiti.
    `CLOUDFLARE_API_TOKEN` con la chiave, poi `CLOUDFLARE_ACCOUNT_ID` con l'Account ID.
 5. Scheda **Actions** → **Server del gruppo** → **Run workflow**.
 
-Il lavoro fa da solo il resto: sottodominio neutro `bole-funghi` su `workers.dev`, database D1 **in UE**
+Il lavoro fa da solo il resto: sottodominio neutro `bole-funghi` su `workers.dev` (se Cloudflare ne ha
+già creato uno da solo, spesso con il nome dell'account, lo sostituisce; un indirizzo che non inizi con
+`bole-` non viene mai scritto nell'app), database D1 **in UE**
 (`--jurisdiction eu`, non si può cambiare dopo), tabella, segreto `PEPE` casuale (non lo vede nessuno:
 se si cambiasse, i gruppi esistenti non ritroverebbero più i loro ritrovamenti), `ORIGINI` = solo
 l'indirizzo dell'app, pubblicazione del server. Alla fine scrive l'indirizzo del server in
@@ -91,6 +93,7 @@ A mano, dal computer, gli stessi passi sono: `npx wrangler d1 create bole-condiv
 | `/v1/stato` dice «server non configurato» | manca il segreto `PEPE` | `npx wrangler secret put PEPE` |
 | Errore 429 «troppe richieste» | più di 60 richieste al minuto dallo stesso indirizzo, o oltre 200 ritrovamenti in un giorno per un gruppo | aspettare; se serve, alzare i limiti in `wrangler.toml` o `src/regole.ts` |
 | Errore 503 «server pieno per oggi» | oltre 5.000 ritrovamenti nuovi in un giorno in tutto | aspettare domani |
+| «Server del gruppo» si ferma con «altri Worker» | l'account Cloudflare ha altri Worker e il sottodominio `workers.dev` non è neutro | Cloudflare → *Workers & Pages* → a destra *Subdomain* → *Change*: un nome che inizi con `bole-`, poi rilancia «Server del gruppo» |
 | Errori del database | limiti gratuiti di D1 superati (5 milioni di righe lette o 100.000 scritte al giorno) | aspettare la mezzanotte UTC |
 | Un gruppo riceve dati falsi | qualcuno ha il codice | create un gruppo nuovo e date il codice solo a chi volete |
 
