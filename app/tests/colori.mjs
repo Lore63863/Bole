@@ -3,7 +3,7 @@
 // Uso: CHROMIUM=<percorso> node tests/colori.mjs <url-app> <cartella-uscita>, poi python3 tests/colori_conta.py <cartella-uscita>
 import { webkit, chromium, devices } from "playwright";
 const [base, uscita] = process.argv.slice(2);
-const viste = [["cuneese_z11", "7.45,44.35", 11], ["liguria_z10", "8.45,44.38", 10], ["ceva_z12", "8.1,44.33", 12], ["valle_z14", "7.40,44.30", 14]];
+const viste = process.env.VISTE ? JSON.parse(process.env.VISTE) : [["cuneese_z11", "7.45,44.35", 11], ["liguria_z10", "8.45,44.38", 10], ["ceva_z12", "8.1,44.33", 12], ["valle_z14", "7.40,44.30", 14]];
 for (const [tel, br, opt] of [["iphone", webkit, { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true }], ["android", chromium, devices["Pixel 7"]]]) {
   const b = await br.launch(tel === "android" ? { executablePath: process.env.CHROMIUM || undefined } : {});
   const p = await (await b.newContext({ ...opt, locale: "it-IT" })).newPage();
