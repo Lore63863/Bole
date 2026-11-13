@@ -42,9 +42,14 @@ export function collegaSchede(schermo: Schermo, mappa: Mappa, meteo: Meteo, regi
   });
 
   // tasto "Strumenti" sopra quello della posizione
-  const strumenti = el("button", { class: "tasto-tondo", type: "button", style: "bottom: 96px", "aria-label": "Strumenti e livelli della mappa" }, icona(ICONE.strati));
+  const strumenti = el("button", { class: "tasto-tondo", type: "button", "aria-label": "Strumenti e livelli della mappa" }, icona(ICONE.strati));
   strumenti.addEventListener("click", () => apriStrumenti(mappa, meteo));
-  schermo.areaMappa.append(strumenti);
+  // scorciatoia: bussola, torna all'auto e tramonto con un tocco
+  const inBosco = el("button", { class: "tasto-tondo", type: "button", "aria-label": "In bosco: bussola e torna all'auto" }, icona(ICONE.bussola));
+  inBosco.addEventListener("click", () => apriInBosco(mappa));
+  schermo.colonna.prepend(strumenti, inBosco);
+  // con un foglio aperto la barra delle schede deve vedersi: il cassetto si riapre
+  ascoltaScheda((attiva) => { if (attiva !== "mappa") schermo.cassetto("medio"); });
 
   avviaAvvisoTramonto(() => apriInBosco(mappa));
   consiglioHome(schermo);

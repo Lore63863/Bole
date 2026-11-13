@@ -101,7 +101,8 @@ export default {
         return risposta({ oggi, ritrovamenti: results }, 200, cors);
       }
 
-      // POST: un ritrovamento nuovo
+      // POST: un ritrovamento nuovo (la lunghezza si controlla prima di leggere, così un corpo enorme non si carica)
+      if (Number(richiesta.headers.get("Content-Length") ?? 0) > LIMITI.corpo) return errore("richiesta troppo grande", 413, cors);
       const testo = await richiesta.text();
       if (testo.length > LIMITI.corpo) return errore("richiesta troppo grande", 413, cors);
       let r: Record<string, unknown>;

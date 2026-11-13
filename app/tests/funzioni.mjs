@@ -31,6 +31,7 @@ await foto("01_mappa");
 // Perché qui?
 await page.locator("#mappa canvas").click({ position: { x: 195, y: 300 } });
 await aspettaTesto("Il posto");
+await page.evaluate(() => document.querySelectorAll(".foglio details").forEach((d) => d.open = true));
 await foto("02_perche_qui");
 await page.locator(".foglio .corpo").evaluate((e) => e.scrollTo(0, 700));
 await foto("03_perche_qui_meteo");

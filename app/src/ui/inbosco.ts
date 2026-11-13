@@ -140,8 +140,9 @@ export async function apriInBosco(mappa: Mappa) {
       Number.isFinite(mancano) && mancano > 0 && mancano <= MINUTI_AVVISO
         ? el("div", { class: "avviso-fisso" }, icona(ICONE.avviso, 20), `Mancano ${durata(mancano)} al tramonto: è ora di rientrare.`)
         : Number.isFinite(mancano) && mancano > 0 ? el("p", {}, `Mancano ${durata(mancano)} al tramonto.`) : el("p", {}, "Il sole è già tramontato."),
-      el("p", { class: "fonte" }, "Calcolo astronomico (NOAA) per la tua posizione: in valle il sole sparisce prima, dietro i monti. ",
-        "L'avviso compare 60 minuti prima, se Bolé è aperta: per sicurezza imposta anche una sveglia."));
+      el("p", { class: "fonte" }, "In valle il sole sparisce prima, dietro i monti: per sicurezza imposta anche una sveglia."),
+      el("details", { class: "di-piu" }, el("summary", {}, "Di più"),
+        el("p", { class: "fonte" }, "Calcolo astronomico (NOAA) per la tua posizione. L'avviso compare 60 minuti prima del tramonto, ma solo se Bolé è aperta: una pagina web non può suonare a schermo spento.")));
   };
 
   const disegnaPosizione = async () => {

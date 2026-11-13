@@ -53,6 +53,7 @@ const p = await page.evaluate(async () => {
 console.log("senza rete, punto 7.42/44.31:", JSON.stringify(p));
 await page.locator("#mappa canvas").click({ position: { x: 195, y: 330 } });
 await page.waitForFunction(() => document.body.innerText.includes("Il posto"), null, { timeout: 30000 });
+await page.evaluate(() => document.querySelectorAll(".foglio details").forEach((d) => d.open = true));
 await page.waitForTimeout(800);
 await page.screenshot({ path: `${uscita}/31_senza_rete_perche.png` });
 console.log(errori.length ? "ERRORI:\n" + errori.join("\n") : "nessun errore");

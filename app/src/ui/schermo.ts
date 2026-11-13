@@ -7,8 +7,10 @@ import { COLORI_CLASSI, NOMI_CLASSI, giornoDellAnno } from "../calcolo/formule";
 import { GRUPPO_PORCINI, MINIMO_RITROVAMENTI_PRECISI, SPECIE, nomeScelta, specieDi } from "../dati/catalogo";
 import type { Meteo } from "../dati/meteo";
 import { LIMITI, LIVELLO_INDICE, urlIndice } from "../mappa/stile";
-import { dataBreve, el, icona, ICONE, quandoInParole } from "./dom";
+import { dataBreve, el, icona, ICONE, memoria, quandoInParole } from "./dom";
+import { barraCerca } from "./cerca";
 import { apriFoglio, chiudiFoglio } from "./foglio";
+import { contesto } from "../dati/contesto";
 import { stato } from "./stato";
 
 export interface Schermo {
@@ -16,7 +18,11 @@ export interface Schermo {
   contenitoreMappa: HTMLElement;
   areaMappa: HTMLElement;
   tastoPosizione: HTMLButtonElement;
+  /** colonna dei tasti tondi a destra, sopra il cassetto */
+  colonna: HTMLElement;
   schede: Record<string, HTMLButtonElement>;
+  /** cassetto in basso: "medio" (giorno e schede) o "basso" (solo una riga: mappa quasi a schermo intero) */
+  cassetto: (stato?: "medio" | "basso") => "medio" | "basso";
 }
 
 const GIUDIZIO = [
@@ -28,13 +34,19 @@ const GIUDIZIO = [
   "giornata fra le migliori della stagione",
 ];
 
+/**
+ * Impaginazione come le app di mappe più diffuse (Google Maps, Apple Mappe): la mappa occupa tutto lo
+ * schermo; sopra galleggiano la ricerca e le specie; in basso un cassetto con il giorno e le schede,
+ * che si trascina giù fino a una sola riga (mappa quasi a schermo intero) e su per riaprirlo.
+ */
 export function costruisciSchermo(meteo: Meteo): Schermo {
   const vecchi = meteo.oggi.dati_vecchi || oreDa(meteo.oggi.creato) > 36;
   const statoDati = el("button", { class: `stato-dati${vecchi ? " vecchi" : ""}`, type: "button", "aria-label": "Stato dei dati" },
-    vecchi ? icona(ICONE.avviso, 16) : null, vecchi ? "Dati vecchi" : `Meteo di ${dataBreve(meteo.oggi.oggi)}`);
+    vecchi ? icona(ICONE.avviso, 16) : null, vecchi ? "Dati vecchi" : `Meteo ${dataBreve(meteo.oggi.oggi).replace(/^\S+ /, "")}`);
   const contenitoreMappa = el("div", { id: "mappa", role: "application", "aria-label": "Mappa: tocca un punto per sapere perché" });
-  const tastoPosizione = el("button", { class: "tasto-tondo", type: "button", style: "bottom: 40px", "aria-label": "Vai alla mia posizione" }, icona(ICONE.posizione));
-  const areaMappa = el("main", { class: "area-mappa" }, contenitoreMappa, legenda(), tastoPosizione,
+  const tastoPosizione = el("button", { class: "tasto-tondo", type: "button", "aria-label": "Vai alla mia posizione" }, icona(ICONE.posizione));
+  const colonna = el("div", { class: "colonna-tasti" }, tastoPosizione);
+  const areaMappa = el("main", { class: "area-mappa" }, contenitoreMappa, legenda(), colonna,
     el("div", { class: "suggerimento", id: "suggerimento" }, "Tocca: «perché qui?» · Tieni premuto: segna"));
   const schede: Record<string, HTMLButtonElement> = {};
   const nav = el("nav", { class: "schede", "aria-label": "Sezioni dell'app" });
@@ -43,17 +55,44 @@ export function costruisciSchermo(meteo: Meteo): Schermo {
     schede[id] = el("button", { type: "button", "aria-current": id === "mappa" ? "page" : undefined }, icona(ic), nome);
     nav.append(schede[id]);
   }
+  const maniglia = el("button", { class: "maniglia", type: "button", "aria-label": "Apri o chiudi il pannello del giorno" }, el("span", {}));
+  const cassetto = el("section", { class: "cassetto medio", "aria-label": "Giorno e sezioni" }, maniglia, pannelloGiorno(meteo), nav);
   const app = el("div", { id: "app" },
-    el("header", { class: "testata" },
-      el("div", { class: "marchio" }, icona(ICONE.fungo, 26), el("h1", {}, "Bolé")),
-      statoDati),
-    rigaSpecie(meteo),
     areaMappa,
-    pannelloGiorno(meteo),
-    nav);
+    el("div", { class: "sopra" },
+      el("div", { class: "riga-alto" }, barraCerca(() => contesto.mappa), statoDati),
+      rigaSpecie(meteo)),
+    cassetto);
   document.body.prepend(app);
   statoDati.addEventListener("click", () => apriStatoDati(meteo));
-  return { app, contenitoreMappa, areaMappa, tastoPosizione, schede };
+
+  // quanto è alto il cassetto: lo usano legenda, tasti e scritte della mappa per stargli sopra
+  new ResizeObserver(() => app.style.setProperty("--sotto", `${cassetto.offsetHeight}px`)).observe(cassetto);
+  const imposta = (s?: "medio" | "basso") => {
+    if (s) {
+      cassetto.classList.toggle("basso", s === "basso");
+      cassetto.classList.toggle("medio", s === "medio");
+      document.body.dataset.cassetto = s;
+    }
+    return cassetto.classList.contains("basso") ? "basso" : "medio";
+  };
+  imposta(memoria.leggi<"medio" | "basso">("cassetto", "medio"));
+  const cambia = (s: "medio" | "basso") => { imposta(s); memoria.scrivi("cassetto", s); };
+  // trascina giù = chiudi, su = apri; un tocco sulla maniglia = cambia
+  const riepilogo = cassetto.querySelector(".riepilogo") as HTMLElement;
+  for (const presa of [maniglia, riepilogo]) {
+    let y0: number | null = null;
+    presa.addEventListener("pointerdown", (e) => { y0 = e.clientY; });
+    presa.addEventListener("pointerup", (e) => {
+      if (y0 === null) return;
+      const dy = e.clientY - y0; y0 = null;
+      if (dy > 24) cambia("basso");
+      else if (dy < -24) cambia("medio");
+      else if (presa === maniglia || imposta() === "basso") cambia(imposta() === "basso" ? "medio" : "basso");
+    });
+    presa.addEventListener("pointercancel", () => { y0 = null; });
+  }
+  return { app, contenitoreMappa, areaMappa, tastoPosizione, colonna, schede, cassetto: imposta };
 }
 
 function oreDa(iso: string) {
@@ -104,16 +143,20 @@ function sceltaSpecie(meteo: Meteo) {
 // --- legenda ------------------------------------------------------------------------------------
 function legenda() {
   const titolo = el("div", { class: "titolo" });
-  const aggiorna = () => { titolo.textContent = `Indice per ${nomeScelta(stato.scelta).toLowerCase()}`; };
+  const aggiorna = () => { titolo.textContent = nomeScelta(stato.scelta); };
   aggiorna();
   stato.ascolta(aggiorna);
-  return el("div", { class: "legenda", "aria-label": "Legenda" },
+  const l = el("button", { class: "legenda", type: "button", "aria-label": "Legenda: tocca per i dettagli", "aria-expanded": "false" },
     titolo,
     el("div", { class: "scala" }, ...COLORI_CLASSI.map((c) => el("div", { style: `background:${c}` }))),
-    el("div", { class: "estremi" }, el("span", {}, "molto bassa"), el("span", {}, "molto alta")),
-    el("div", { class: "riga" },
-      el("span", { style: "display:inline-block;width:22px;height:12px;border-radius:2px;background:repeating-linear-gradient(135deg,#F2CF73 0 4px,#14211B 4px 5px)" }),
-      "Righe: affidabilità bassa"));
+    el("div", { class: "estremi" }, el("span", {}, "bassa"), el("span", {}, "alta")),
+    el("div", { class: "dettagli" },
+      el("div", { class: "riga" }, "Classi: molto bassa, bassa, media, alta, molto alta (rispetto alla stagione della specie)"),
+      el("div", { class: "riga" },
+        el("span", { style: "display:inline-block;flex-shrink:0;width:22px;height:12px;border-radius:2px;background:repeating-linear-gradient(135deg,#F2CF73 0 4px,#14211B 4px 5px)" }),
+        "Righe: affidabilità bassa")));
+  l.addEventListener("click", () => l.setAttribute("aria-expanded", String(l.getAttribute("aria-expanded") !== "true")));
+  return l;
 }
 
 // --- pannello del giorno ------------------------------------------------------------------------
@@ -124,38 +167,41 @@ function pannelloGiorno(meteo: Meteo) {
   const quando = el("div", { class: "quando" });
   const aff = el("div", { class: "aff" });
   const picco = el("span", { class: "chip-picco nascosto" });
-  const barre = el("div", { class: "barre", style: `grid-template-columns:repeat(${n},1fr)`, role: "group", "aria-label": "Andamento nei prossimi giorni" });
-  const cursore = el("input", { class: "cursore", type: "range", min: 0, max: n - 1, step: 1, value: 0, "aria-label": "Giorno mostrato sulla mappa" });
+  const barre = el("div", { class: "barre", style: `grid-template-columns:repeat(${n},1fr)`, role: "group", "aria-label": "Giorno mostrato sulla mappa: tocca o scorri sulle barre" });
   const frase = el("div", { class: "frase", "aria-live": "polite" });
-  let quote: number[] = [], massimi: number[] = [];
+  let quote: number[] = meteo.oggi.giorni.map(() => 0), massimi: number[] = [];
 
   const aggiorna = () => {
     const g = stato.giorno;
     quando.replaceChildren(quandoInParole(g), el("small", {}, dataBreve(meteo.oggi.giorni[g])));
     const base = meteo.oggi.affidabilita[g];
     const poche = specieDi(stato.scelta).some((s) => (parametriDi(s.id)?.ritrovamenti_precisi ?? 0) < MINIMO_RITROVAMENTI_PRECISI);
-    aff.replaceChildren("Affidabilità della previsione: ", el("b", {}, base),
-      poche ? " (un gradino in meno dove decide una specie con pochi dati, e in Liguria)" : " (un gradino in meno in Liguria)");
-    cursore.value = String(g);
+    aff.replaceChildren("Affidabilità ", el("b", {}, base), poche ? " · più bassa dove decide una specie con pochi dati e in Liguria" : " · più bassa in Liguria");
     [...barre.children].forEach((b, i) => b.classList.toggle("scelto", i === g));
-    if (quote.length) {
+    if (massimi.length) {
       const pct = Math.round(quote[g] * 100);
       const m = massimi[g];
       frase.textContent = m === 0
-        ? `${quandoInParole(g)}: nell'area vista non c'è habitat o la specie è fuori stagione.`
-        : `${quandoInParole(g)}, nell'area vista: classe più alta «${NOMI_CLASSI[m]}», ${GIUDIZIO[m]}` +
-          (pct > 0 ? `; ${pct}% dell'habitat in «media» o più.` : ".");
+        ? "Nell'area vista: niente habitat o specie fuori stagione."
+        : `Nell'area vista: al massimo «${NOMI_CLASSI[m]}», ${GIUDIZIO[m]}` + (pct > 0 ? ` · ${pct}% dell'habitat in «media» o più.` : ".");
     }
   };
 
+  const disegnaBarre = () => {
+    const max = Math.max(...quote, 0.0001);
+    barre.replaceChildren(...quote.map((v, i) => {
+      const [, , gg] = meteo.oggi.giorni[i].split("-");
+      return el("button", {
+        type: "button", class: meteo.oggi.affidabilita[i] === "bassa" ? "vuota" : "",
+        "aria-label": `${quandoInParole(i)}, ${dataBreve(meteo.oggi.giorni[i])}: ${Math.round(v * 100)}% in classe media o più`,
+        onclick: () => stato.vaiAlGiorno(i),
+      }, el("span", { class: "colonna-barra" }, el("span", { style: `height:${Math.max(8, (v / max) * 100)}%` })),
+      el("small", {}, i === 0 ? "oggi" : String(Number(gg))));
+    }));
+  };
   disegnaAndamento = (q, m) => {
     quote = q; massimi = m;
-    const max = Math.max(...q, 0.0001);
-    barre.replaceChildren(...q.map((v, i) => el("button", {
-      type: "button", class: meteo.oggi.affidabilita[i] === "bassa" ? "vuota" : "",
-      "aria-label": `${quandoInParole(i)}: ${Math.round(v * 100)}% in classe media o più`,
-      onclick: () => stato.vaiAlGiorno(i),
-    }, el("span", { style: `height:${Math.max(8, (v / max) * 100)}%` }))));
+    disegnaBarre();
     // picco: il giorno migliore e i giorni vicini almeno all'80%
     const top = q.indexOf(Math.max(...q));
     if (Math.max(...q) <= 0) {
@@ -171,17 +217,20 @@ function pannelloGiorno(meteo: Meteo) {
     }
     aggiorna();
   };
+  // scorrere col dito sulle barre cambia il giorno, come un cursore
+  barre.addEventListener("pointermove", (e) => {
+    if (!(e.buttons || e.pointerType === "touch")) return;
+    const r = barre.getBoundingClientRect();
+    const i = Math.min(n - 1, Math.max(0, Math.floor(((e.clientX - r.left) / r.width) * n)));
+    if (i !== stato.giorno) stato.vaiAlGiorno(i);
+  });
 
-  cursore.addEventListener("input", () => stato.vaiAlGiorno(Number(cursore.value)));
+  disegnaBarre();
   stato.ascolta(aggiorna);
   aggiorna();
   return el("section", { class: "pannello", "aria-label": "Giorno della previsione" },
-    el("div", { class: "alto" },
-      el("div", {}, el("label", { class: "etichetta" }, "Giorno mostrato sulla mappa"), quando, aff),
-      picco),
-    barre, cursore,
-    el("div", { class: "sotto-cursore" }, el("span", {}, "Oggi"), el("span", {}, `+${Math.round((n - 1) / 2)} giorni`), el("span", {}, `+${n - 1} giorni`)),
-    frase);
+    el("div", { class: "riepilogo" }, quando, picco),
+    el("div", { class: "dettagli-giorno" }, aff, barre, frase));
 }
 
 // --- collegamento con la mappa -------------------------------------------------------------------

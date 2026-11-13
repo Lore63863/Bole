@@ -38,6 +38,7 @@ export function icona(percorsi: string, dimensione = 24): SVGSVGElement {
 }
 
 export const ICONE = {
+  cerca: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
   fungo: '<path d="M4 11a8 8 0 0 1 16 0H4z"/><path d="M10 11v6.5a2 2 0 0 0 4 0V11"/>',
   mappa: '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
   vicino: '<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',

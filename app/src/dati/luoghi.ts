@@ -82,3 +82,62 @@ export async function nomeBosco(codice: number): Promise<string | null> {
   categorie ??= fetch(url("categorie.json")).then((r) => r.json());
   return (await categorie)[String(codice)]?.categoria ?? null;
 }
+
+// --- ricerca per nome (tutto sul telefono: niente esce) ------------------------------------------
+export interface Trovato { nome: string; tipo: string; lon: number; lat: number; vicinoA: string | null; km: number }
+
+const ORDINE_TIPI: Record<string, number> = { "città": 0, paese: 1, quartiere: 2, frazione: 3, case: 4, "località": 5 };
+let indice: Promise<{ n: string; parole: string[]; v: Nome }[]> | null = null;
+
+/** Testo senza accenti, apostrofi e maiuscole: "Sant'Anna" e "santanna" e "sant anna" si trovano a vicenda. */
+export function normalizza(t: string): string {
+  return t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function caricaIndice() {
+  nomi ??= fetch(url("luoghi/nomi.json")).then((r) => r.json());
+  indice ??= nomi.then((elenco) => elenco.map((v) => { const n = normalizza(v[0]); return { n, parole: n.split(" "), v }; }));
+  return indice;
+}
+
+/** Paese o città più vicino (entro 12 km), per distinguere località con lo stesso nome. */
+async function paeseVicino(lon: number, lat: number, escluso: string): Promise<string | null> {
+  const elenco = await nomi!;
+  let migliore: string | null = null, d = 12;
+  for (const [nome, tipo, lo, la] of elenco) {
+    if ((tipo !== "paese" && tipo !== "città") || nome === escluso) continue;
+    if (Math.abs(la - lat) > 0.12 || Math.abs(lo - lon) > 0.16) continue;
+    const km = distanzaKm(lon, lat, lo, la);
+    if (km < d) { d = km; migliore = nome; }
+  }
+  return migliore;
+}
+
+/** I nomi che corrispondono al testo: prima i nomi uguali, poi quelli che iniziano così; a parità i paesi, poi i più vicini. */
+export async function cercaLuoghi(testo: string, lon: number, lat: number, quanti = 20): Promise<Trovato[]> {
+  const q = normalizza(testo);
+  if (q.length < 2) return [];
+  const voci = await caricaIndice();
+  const trovati: { p: number; v: Nome; km: number }[] = [];
+  for (const { n, parole, v } of voci) {
+    let p: number;
+    if (n === q) p = 0;
+    else if (n.startsWith(q)) p = 1;
+    else if (parole.some((w) => w.startsWith(q))) p = 2;
+    else if (q.length >= 3 && n.includes(q)) p = 3;
+    else continue;
+    trovati.push({ p: p * 10 + (ORDINE_TIPI[v[1]] ?? 6), v, km: distanzaKm(lon, lat, v[2], v[3]) });
+  }
+  trovati.sort((a, b) => a.p - b.p || a.km - b.km);
+  const scelti: typeof trovati = [];
+  for (const t of trovati) {
+    // stesso nome e tipo a meno di 1 km: è lo stesso posto scritto due volte
+    if (scelti.some((s) => s.v[0] === t.v[0] && s.v[1] === t.v[1] && distanzaKm(s.v[2], s.v[3], t.v[2], t.v[3]) < 1)) continue;
+    scelti.push(t);
+    if (scelti.length >= quanti) break;
+  }
+  return Promise.all(scelti.map(async ({ v, km }) => ({
+    nome: v[0], tipo: v[1], lon: v[2], lat: v[3], km,
+    vicinoA: v[1] === "paese" || v[1] === "città" ? null : await paeseVicino(v[2], v[3], v[0]),
+  })));
+}

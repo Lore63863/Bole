@@ -33,7 +33,7 @@ function chipClasse(cl: number) {
 }
 
 export async function apriPercheQui(mappa: Mappa, meteo: Meteo, lon: number, lat: number) {
-  const corpo = apriFoglio("Perché qui?", `${lat.toFixed(5)}, ${lon.toFixed(5)}`);
+  const corpo = apriFoglio("Perché qui?", `${lat.toFixed(5)}, ${lon.toFixed(5)}`, undefined, "mappa", "mezzo");
   corpo.append(el("p", {}, "Calcolo…"));
   const [p, luogo, aree, vicine, gruppo] = await Promise.all([
     punto(lon, lat), nomeVicino(lon, lat), areeProtette(lon, lat), vociVicine(lon, lat, 1), segnalazioniAltrui(),
@@ -133,25 +133,29 @@ export async function apriPercheQui(mappa: Mappa, meteo: Meteo, lon: number, lat
     elencoSegnalazioni((nelQuadrato.length ? nelQuadrato : gruppoVicino).slice(0, 5)),
     el("p", { class: "fonte" }, "Non verificate; posizione approssimata al quadrato di 1 km. Non cambiano i colori della mappa.")) : null;
 
+  // come la scheda di un posto nelle app di mappe: in alto il giudizio e i tasti, sotto i dettagli da aprire
+  const sezione = (titoloSez: string, aperta: boolean, ...dentro: unknown[]) =>
+    el("details", { class: "scheda sezione", open: aperta }, el("summary", {}, el("h3", {}, titoloSez)), ...(dentro as never[]));
   corpo.replaceChildren();
   aggiungi(corpo, [
-    el("div", { class: "avviso-fisso" }, icona(ICONE.avviso, 20),
-      el("span", {}, el("b", {}, "Non mangiare mai un fungo riconosciuto con un'app: "), "fallo controllare al Centro di controllo micologico dell'ASL (gratuito).")),
-    el("div", { class: "scheda" },
+    el("div", { class: "scheda testa-posto" },
       el("h3", {}, titolo),
-      dove ? el("p", { style: "margin-top:-4px;color:#4a5750" }, dove) : null,
-      el("p", {}, `${quandoInParole(g)} (${dataBreve(oggi.data)}), ${nome}: `, chipClasse(oggi.cl)),
-      el("p", { style: "font-size:13px;color:#4a5750" }, `Affidabilità: ${aff}` +
-        (oggi.poche ? " — specie con pochi ritrovamenti per tararla" : "") + (liguria ? " — in Liguria la carta dei boschi è del 2010" : "")),
-      el("div", { style: "font-size:12px;color:#4a5750;margin-top:8px" }, `Da oggi a +${giorni.length - 1} giorni (righe: affidabilità bassa)`),
+      dove ? el("p", { class: "dove" }, dove) : null,
+      el("p", { class: "giudizio" }, `${quandoInParole(g)} (${dataBreve(oggi.data)}), ${nome}: `, chipClasse(oggi.cl)),
+      giorni[migliore].cl > 0 ? el("p", { class: "migliore" }, `Giorno migliore qui: ${quandoInParole(migliore).toLowerCase()} (${dataBreve(giorni[migliore].data)}), «${NOMI_CLASSI[giorni[migliore].cl]}»`) : null,
+      el("div", { class: "fila-tasti azioni" },
+        el("button", { class: "tasto", type: "button", onclick: () => nuovoRitrovamento(lon, lat, "mappa") }, icona(ICONE.diario, 18), "Segna"),
+        el("button", { class: "tasto secondario", type: "button", onclick: () => aggiungiPreferita(lon, lat, luogo?.nome ?? titolo) }, icona(ICONE.stella, 18), "Salva"),
+        el("a", { class: "tasto secondario", href: urlNaviga(lat, lon), target: "_blank", rel: "noopener", "aria-label": `Naviga con ${NOME_MAPPE}` }, icona(ICONE.naviga, 18), "Naviga")),
+      el("div", { class: "piccolo" }, `Prossimi ${giorni.length} giorni (righe: affidabilità bassa)`),
       strisce,
-      giorni[migliore].cl > 0 ? el("p", { style: "font-size:13px" }, `Giorno migliore qui: ${quandoInParole(migliore).toLowerCase()} (${dataBreve(giorni[migliore].data)}), «${NOMI_CLASSI[giorni[migliore].cl]}».`) : null,
-      el("p", { class: "fonte" }, "Le classi sono relative alla stagione della specie: «alta» = fra le giornate migliori 1 su 10. Probabilità relative, mai certezze.")),
-    avvisi.length ? el("div", { class: "scheda" }, el("h3", {}, "Avvisi"), ...avvisi) : null,
+      el("p", { class: "piccolo" }, `Affidabilità ${aff}` + (oggi.poche ? " · specie con pochi ritrovamenti per tararla" : "") + (liguria ? " · in Liguria la carta dei boschi è del 2010" : ""))),
+    el("div", { class: "avviso-fisso compatto" }, icona(ICONE.avviso, 18),
+      el("span", {}, el("b", {}, "Non mangiare mai un fungo riconosciuto con un'app: "), "fallo controllare al Centro micologico dell'ASL (gratuito).")),
+    avvisi.length ? sezione(`Avvisi (${avvisi.length})`, false, ...avvisi) : null,
     storicoMio,
     storicoGruppo,
-    el("div", { class: "scheda" },
-      el("h3", {}, "Il posto"),
+    sezione("Il posto", false,
       el("dl", { class: "valori" },
         el("dt", {}, "Bosco"), el("dd", {}, bosco ?? "non in carta (prato, coltivo o altro)"),
         el("dt", {}, "Quota"), el("dd", {}, `${Math.round(quota)} m`),
@@ -159,8 +163,7 @@ export async function apriPercheQui(mappa: Mappa, meteo: Meteo, lon: number, lat
         p.esposizione !== null && (p.pendenza ?? 0) > 3 ? [el("dt", {}, "Esposizione"), el("dd", {}, `verso ${puntoCardinale(p.esposizione)}`)] : null,
         ...righeHabitat),
       el("p", { class: "fonte" }, "Carte forestali di Regione Piemonte (2025) e Regione Liguria (2010), DTM regionali, ESA WorldCover (CC BY 4.0).")),
-    el("div", { class: "scheda" },
-      el("h3", {}, `Il meteo di ${quandoInParole(g).toLowerCase()}`),
+    sezione(`Il meteo di ${quandoInParole(g).toLowerCase()}`, false,
       el("dl", { class: "valori" },
         el("dt", {}, "Pioggia degli ultimi 26 giorni"), el("dd", {}, `${Math.round(oggi.P)} mm`),
         el("dt", {}, "Temperatura media degli ultimi 20 giorni"), el("dd", {}, `${oggi.t.toFixed(1).replace(".", ",")} °C`),
@@ -169,10 +172,7 @@ export async function apriPercheQui(mappa: Mappa, meteo: Meteo, lon: number, lat
       grafico(serie.pioggia, serie.tMedia, 30, g),
       el("p", { class: "fonte" }, "Temperature riportate alla quota del punto. ",
         el("a", { href: "https://open-meteo.com/", target: "_blank", rel: "noopener" }, "Weather data by Open-Meteo.com"), " (ECMWF IFS, CC BY 4.0).")),
-    el("div", { class: "fila-tasti" },
-      el("button", { class: "tasto", type: "button", onclick: () => aggiungiPreferita(lon, lat, luogo?.nome ?? titolo) }, icona(ICONE.stella, 18), "Salva tra le preferite"),
-      el("button", { class: "tasto secondario", type: "button", onclick: () => nuovoRitrovamento(lon, lat, "mappa") }, icona(ICONE.diario, 18), "Segna nel diario"),
-      el("a", { class: "tasto secondario", href: urlNaviga(lat, lon), target: "_blank", rel: "noopener", "aria-label": `Naviga con ${NOME_MAPPE}` }, icona(ICONE.naviga, 18), "Naviga")),
+    el("p", { class: "fonte", style: "margin:0 4px" }, "Le classi sono relative alla stagione della specie: «alta» = fra le giornate migliori 1 su 10. Probabilità relative, mai certezze."),
   ]);
   mappa.flyTo({ center: [lon, lat], duration: 300, offset: [0, 0] });
 }

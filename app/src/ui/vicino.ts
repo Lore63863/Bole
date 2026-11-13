@@ -121,19 +121,21 @@ function voce(z: Zona, luogo: Awaited<ReturnType<typeof nomeVicino>>, o: { lon: 
   const verso = puntoCardinale(direzioneGradi(o.lon, o.lat, z.lon, z.lat));
   const aff = affidabilitaNelPunto(meteo.oggi.affidabilita[stato.giorno], z.poche, z.liguria);
   const nome = luogo ? (luogo.km < 1 ? luogo.nome : `Vicino a ${luogo.nome}`) : "Zona senza nome";
+  const dist = `${km < 10 ? km.toFixed(1).replace(".", ",") : Math.round(km)} km verso ${verso}`;
+  // una riga per zona; un tocco la apre con i dettagli e i tasti (come gli elenchi delle app di mappe)
   return el("li", {},
-    el("div", { style: "display:flex;justify-content:space-between;gap:8px;align-items:flex-start" },
-      el("div", {},
-        el("div", { style: "font-weight:700" }, nome),
-        el("div", { style: "font-size:13px;color:#4a5750" },
-          `${km < 10 ? km.toFixed(1).replace(".", ",") : Math.round(km)} km verso ${verso} · ${Math.round(z.buone * 100)}% del bosco adatto in «media» o più · affidabilità ${aff}`),
-        storicoZona(z, voci, gruppo)),
-      chip(z.classe)),
-    el("div", { class: "fila-tasti compatta" },
-      el("button", { class: "tasto secondario piccolo", type: "button", onclick: () => {
-        chiudiFoglio();
-        mappa.flyTo({ center: [z.lon, z.lat], zoom: Math.max(mappa.getZoom(), 12.5) });
-      } }, "Mappa"),
-      el("button", { class: "tasto secondario piccolo", type: "button", onclick: () => apriPercheQui(mappa, meteo, z.lon, z.lat) }, "Perché?"),
-      ...linkNaviga(z.lat, z.lon)));
+    el("details", { class: "zona" },
+      el("summary", {},
+        el("span", { class: "testo" }, el("b", {}, nome), el("small", {}, dist)),
+        chip(z.classe)),
+      el("div", { class: "dettagli-zona" },
+        el("div", { style: "font-size:13px;color:#4a5750" }, `${Math.round(z.buone * 100)}% del bosco adatto in «media» o più · affidabilità ${aff}`),
+        storicoZona(z, voci, gruppo),
+        el("div", { class: "fila-tasti compatta" },
+          el("button", { class: "tasto secondario piccolo", type: "button", onclick: () => {
+            chiudiFoglio();
+            mappa.flyTo({ center: [z.lon, z.lat], zoom: Math.max(mappa.getZoom(), 12.5) });
+          } }, "Mappa"),
+          el("button", { class: "tasto secondario piccolo", type: "button", onclick: () => apriPercheQui(mappa, meteo, z.lon, z.lat) }, "Perché?"),
+          ...linkNaviga(z.lat, z.lon)))));
 }

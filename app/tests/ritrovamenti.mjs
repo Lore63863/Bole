@@ -46,7 +46,7 @@ const telefono = async (lat, lon, android = false) => {
     else t.errori.push(`[console, ${t.fase}] ${m.text()}`);
   });
   // le tessere annullate dalla mappa quando si sposta ("cancelled") sono normali
-  page.on("requestfailed", (r) => { if (t.fase !== "senza rete" && !/cancel/i.test(r.failure()?.errorText ?? "")) t.errori.push(`[rete, ${t.fase}] ${r.url()} ${r.failure()?.errorText}`); });
+  page.on("requestfailed", (r) => { if (t.fase !== "senza rete" && !/cancel|abort/i.test(r.failure()?.errorText ?? "")) t.errori.push(`[rete, ${t.fase}] ${r.url()} ${r.failure()?.errorText}`); });
   page.on("request", (r) => t.richieste.push({ url: r.url(), metodo: r.method(), corpo: r.postData() }));
   return t;
 };
@@ -161,7 +161,7 @@ try {
   await A.page.waitForTimeout(800);
   await A.page.locator("#mappa canvas").click({ position: { x: 250, y: 190 } });
   await testo(A.page, "Il posto");
-  await A.page.locator("button", { hasText: "Salva tra le preferite" }).click();
+  await A.page.locator(".testa-posto button", { hasText: "Salva" }).click();
   await A.page.locator(".foglio button", { hasText: "Salva" }).click();
   await testo(A.page, "salvata tra le preferite");
   await scheda(A.page, "Mappa");
@@ -170,7 +170,7 @@ try {
     const m = globalThis.bole.mappa;
     const c = (await m.getSource("miei").getData()).features.map((f) => f.geometry.coordinates);
     const lon = c.map((x) => x[0]), lat = c.map((x) => x[1]);
-    m.fitBounds([[Math.min(...lon), Math.min(...lat)], [Math.max(...lon), Math.max(...lat)]], { padding: { top: 60, bottom: 110, left: 70, right: 90 }, duration: 0, maxZoom: 16 });
+    m.fitBounds([[Math.min(...lon), Math.min(...lat)], [Math.max(...lon), Math.max(...lat)]], { padding: { top: 170, bottom: 290, left: 70, right: 90 }, duration: 0, maxZoom: 16 });
   });
   await A.page.waitForTimeout(1200);
   await foto(A.page, "25_mappa_miei_punti");

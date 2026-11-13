@@ -279,7 +279,6 @@ export async function apriDiario() {
       el("p", { class: "fonte" }, "Puoi segnare un punto anche tenendo premuto il dito sulla mappa.")));
     return;
   }
-  corpo.append(statistiche(voci));
   const lista = el("ul", { class: "elenco" });
   for (const v of voci) {
     lista.append(el("li", {}, el("button", { class: "riga-voce", type: "button", onclick: () => apriVoce(v.id) },
@@ -289,8 +288,9 @@ export async function apriDiario() {
       v.istantanea ? chipClasse(v.istantanea.classe, true) : null,
       icona(ICONE.freccia, 16))));
   }
-  corpo.append(el("div", { class: "scheda" }, el("h3", {}, "Le tue voci"), lista),
-    el("p", { class: "fonte" }, "Tocca una voce per vederla sulla mappa, condividerla o cancellarla. A destra: la classe della mappa quel giorno."));
+  corpo.append(el("div", { class: "scheda" }, el("h3", {}, "Le tue voci"), lista,
+    el("p", { class: "fonte" }, "Tocca una voce per vederla sulla mappa, condividerla o cancellarla. A destra: la classe della mappa quel giorno.")),
+    statistiche(voci));
 }
 
 const MESI = ["G", "F", "M", "A", "M", "G", "L", "A", "S", "O", "N", "D"];
@@ -300,9 +300,10 @@ const NOMI_MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
 export function statistiche(voci: Voce[]) {
   const trovati = voci.filter((v) => v.tipo === "ritrovamento");
   const vuote = voci.filter((v) => v.tipo === "a vuoto");
-  const scheda = el("div", { class: "scheda statistiche" }, el("h3", {}, "Le tue statistiche"),
-    el("p", {}, el("b", {}, String(trovati.length)), trovati.length === 1 ? " ritrovamento" : " ritrovamenti",
-      " · ", el("b", {}, String(vuote.length)), vuote.length === 1 ? " uscita a vuoto" : " uscite a vuoto"));
+  // chiuse di partenza: un tocco le apre (le voci, che servono di più, stanno sopra)
+  const scheda = el("details", { class: "scheda sezione statistiche" },
+    el("summary", {}, el("span", {}, el("h3", {}, "Le tue statistiche"),
+      el("small", { class: "piccolo" }, `${trovati.length} ${trovati.length === 1 ? "ritrovamento" : "ritrovamenti"} · ${vuote.length} ${vuote.length === 1 ? "uscita a vuoto" : "uscite a vuoto"}`))));
   if (!trovati.length && !vuote.length) return scheda;
 
   // per specie
@@ -449,7 +450,9 @@ async function importaFile(testo: string, nome: string): Promise<number> {
     const j = JSON.parse(testo);
     if (j.bole && Array.isArray(j.voci)) {
       for (const v of j.voci) {
-        const foto = v.foto ? await (await fetch(v.foto)).blob() : undefined;
+        // la foto si legge solo se è dentro al file (data:image/…): mai un indirizzo esterno da scaricare
+        const foto = typeof v.foto === "string" && /^data:image\/(jpeg|png|webp|heic);base64,/.test(v.foto)
+          ? await (await fetch(v.foto)).blob() : undefined;
         voci.push({ ...v, foto });
       }
     } else if (j.type === "FeatureCollection") {
@@ -459,6 +462,41 @@ async function importaFile(testo: string, nome: string): Promise<number> {
         precisione: numero(f.properties?.precisione_m), origine: f.properties?.origine ?? undefined, istantanea: f.properties?.istantanea ?? undefined }));
     }
   }
-  for (const v of voci) if (Number.isFinite(v.lat) && Number.isFinite(v.lon)) await diario.salva(v);
-  return voci.length;
+  let n = 0;
+  for (const v of voci) {
+    const voce = pulisci(v);
+    if (!voce) continue;
+    // stesso id = stessa voce (un backup rimesso non la raddoppia); id strani: nuovo id
+    if (typeof v.id === "string" && /^[a-z0-9-]{3,40}$/.test(v.id)) voce.id = v.id;
+    if (v.foto instanceof Blob) voce.foto = v.foto;
+    await diario.salva(voce);
+    n++;
+  }
+  return n;
+}
+
+/**
+ * Da un file importato si tengono solo i campi del diario, con il tipo giusto e una lunghezza ragionevole.
+ * La condivisione col gruppo non si importa mai: va scelta di nuovo, voce per voce.
+ */
+function pulisci(v: Record<string, unknown> | Voce): Voce | null {
+  const x = v as Record<string, unknown>;
+  const lat = Number(x.lat), lon = Number(x.lon);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
+  const testo = (t: unknown, max: number) => (typeof t === "string" && t.trim() ? t.slice(0, max) : undefined);
+  const data = typeof x.data === "string" && /^\d{4}-\d{2}-\d{2}$/.test(x.data) ? x.data : new Date().toLocaleDateString("sv-SE");
+  const ist = x.istantanea as Record<string, unknown> | undefined;
+  const numero = (n: unknown) => (n === null || n === undefined || n === "" || !Number.isFinite(Number(n)) ? undefined : Number(n));
+  return {
+    id: nuovoId(),
+    tipo: x.tipo === "a vuoto" ? "a vuoto" : "ritrovamento",
+    data, lat, lon,
+    ora: typeof x.ora === "string" && /^\d{2}:\d{2}$/.test(x.ora) ? x.ora : undefined,
+    precisione: numero(x.precisione),
+    origine: x.origine === "gps" || x.origine === "mappa" ? x.origine : undefined,
+    specie: testo(x.specie, 60),
+    quantita: x.quantita === "pochi" || x.quantita === "abbastanza" || x.quantita === "tanti" ? x.quantita : undefined,
+    note: testo(x.note, 2000),
+    istantanea: ist && typeof ist === "object" && Number.isInteger(ist.classe) ? (ist as unknown as Voce["istantanea"]) : undefined,
+  };
 }
